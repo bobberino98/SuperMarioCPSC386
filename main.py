@@ -18,7 +18,7 @@ class Game:
 
     def play(self):
         while True:
-            self.screen.fill(settings.game_color)
+            self.screen.fill(settings.color_mario_blue)
             user_control.check_events()
             self.map.blitme()
             pygame.display.flip()
