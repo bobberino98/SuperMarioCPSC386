@@ -1,5 +1,6 @@
 import pygame
 from settings import Settings
+import user_control
 
 settings = Settings()
 
@@ -14,8 +15,9 @@ class Game:
         return settings.game_title
 
     def play(self):
-        while settings.game_active:
+        while True:
             self.screen.fill(settings.game_color)
+            user_control.check_events()
             pygame.display.flip()
 
 
