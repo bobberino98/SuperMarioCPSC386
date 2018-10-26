@@ -14,7 +14,7 @@ class Game:
         return settings.game_title
 
     def play(self):
-        while settings.game_title:
+        while settings.game_active:
             self.screen.fill(settings.game_color)
             pygame.display.flip()
 
