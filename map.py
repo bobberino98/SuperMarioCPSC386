@@ -1,4 +1,5 @@
 from pygame.sprite import Group
+import pygame
 from brick import Brick
 
 
@@ -25,7 +26,16 @@ class Map:
             new_column.add(brick)
         self.brick_columns.append(new_column)
 
-    def blitme(self):   # blit everything on the map
-        for column in self.brick_columns:   # blit all bricks
+    def update(self):  # Update and then blit
+        self.blitme()
+
+    def blitme(self):   # Blit everything on the map
+        for column in self.brick_columns:   # Blit all bricks
             for brick in column:
                 self.screen.blit(brick.image, brick.rect)
+
+    def object_hit_ground(self, item):
+        for x in self.brick_columns:
+            if pygame.sprite.spritecollideany(item, x):
+                # print(item.__str__() + " is touching the ground")
+                return True
