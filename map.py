@@ -1,6 +1,6 @@
 from pygame.sprite import Group
 import pygame
-from brick import Brick
+import brick
 
 
 class Map:
@@ -11,20 +11,26 @@ class Map:
         self.settings = settings
         self.screen = screen
         self.dist = 0
-        for x in range(39):  # start with 18 columns of bricks
-            self.add_column()
+        for num in range(39):  # start with 18 columns of bricks
+            self.add_column(num)
 
-    def add_column(self):  # create a new column of bricks
+    def add_column(self, num):  # create a new column of bricks
         new_column = Group()
         if len(self.brick_columns) == 0:
             x = 0
         else:
             x = 32 * len(self.brick_columns)
-        for i in range(4):
-            brick = Brick(self.screen)
-            brick.rect.x = x
-            brick.rect.y = self.settings.brick_y_offset + (32 * i)
-            new_column.add(brick)
+        for i in range(2):
+            brick_temp = brick.Brick(self.screen)
+            brick_temp.rect.x = x
+            brick_temp.rect.y = self.settings.brick_y_offset + (32 * i)
+            new_column.add(brick_temp)
+            if num == 17:
+                brick_temp = brick.QBrick(self.screen)
+                brick_temp.rect.x = x
+                brick_temp.rect.y = self.settings.brick_y_offset - 96
+                new_column.add(brick_temp)
+
         self.brick_columns.append(new_column)
 
     def update(self):  # Update and then blit
