@@ -8,7 +8,7 @@ class Mario(Sprite):
     SPEED_CAP = 5
     ACCEL_FACTOR = 0.025
     DECEL_FACTOR = 0.25
-    FALL_FACTOR = 0.15
+    FALL_FACTOR = 0.25
     TURN_FACTOR = 0.3
 
     def __init__(self, screen, settings, gamemap):

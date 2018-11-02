@@ -9,6 +9,7 @@ settings = Settings()
 
 class Game:
     def __init__(self):
+
         pygame.init()
         pygame.display.set_caption(settings.game_title)
         self.screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
@@ -19,6 +20,8 @@ class Game:
         return settings.game_title
 
     def play(self):
+        clock = pygame.time.Clock()
+
         user_control = Controller(self.mario)
         while True:
             self.screen.fill(settings.color_mario_blue)
@@ -26,6 +29,7 @@ class Game:
             self.map.update()
             self.mario.update(self.map)
             pygame.display.flip()
+            clock.tick(60)
 
 
 game = Game()
