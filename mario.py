@@ -6,6 +6,8 @@ from gravity import Gravity
 class Mario(Sprite):
     SPEED_CAP = 5
     ACCEL_FACTOR = 0.025
+    DECEL_FACTOR = 0.25
+    TURN_FACTOR = 0.5
 
     def __init__(self, screen, settings):
         super(Mario, self).__init__()
@@ -27,6 +29,7 @@ class Mario(Sprite):
             self.gravity.perform(self)
         if self.moving_left:
             self.dir = -1
+
             self.accelerate()
             self.rect.x += self.dir * self.speed
 
@@ -41,7 +44,6 @@ class Mario(Sprite):
             self.decelerate()
             self.rect.x += self.dir * self.speed
 
-
         self.blitme()
 
     def accelerate(self):
@@ -51,8 +53,10 @@ class Mario(Sprite):
             self.speed *= 1 + Mario.ACCEL_FACTOR
 
     def decelerate(self):
-        if self.speed > 0:
-            self.speed -= Mario.ACCEL_FACTOR
+        if self.speed >= Mario.ACCEL_FACTOR:
+            self.speed -= Mario.DECEL_FACTOR
+        else:
+            self.speed = 0
 
     def blitme(self):   # Blit Mario
         self.screen.blit(self.image, self.rect)

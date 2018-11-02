@@ -30,17 +30,17 @@ class Controller:
     def check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                print("EXITING")
+
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                print("KEY DOWN")
+
                 self.check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self.check_keyup_events(event)
-                print("KEY UP")
+
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
-                print("CLICK AT", mouse_x, mouse_y)
+
 
     def check_keydown_events(self, event):
         if event.key == pygame.K_RIGHT:
