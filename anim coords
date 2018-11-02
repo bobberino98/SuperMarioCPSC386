@@ -1,0 +1,106 @@
+//constructor start state
+Self.state = “walking”
+
+
+If state == “standing”:
+	screen.blit(self.img, self.rect, (0,0,17,34))
+elif state == “walking”:
+	screen.blit(self.img, self.rect, (0,35,14,66))
+	screen.blit(self.img, self.rect, (23,35,15,66))
+	screen.blit(self.img, self.rect, (46,35,37,66))
+	screen.blit(self.img, self.rect, (67,35,82,66))
+elif state == “running”
+	screen.blit(self.img, self.rect, (0,68,23,96))
+	screen.blit(self.img, self.rect, (25,69,48,98))
+	screen.blit(self.img, self.rect, (50,71,73,98))
+	screen.blit(self.img, self.rect, (77,71,100,98))
+elif state == “ducking”
+	screen.blit(self.img, self.rect, (0,98,17,119))
+	screen.blit(self.img, self.rect, (21,100,38,119))
+elif state == “jumping”
+	screen.blit(self.img, self.rect, (0,121,20,151))
+	screen.blit(self.img, self.rect, (24,122,44,151))
+	screen.blit(self.img, self.rect, (49,123,67,152))
+elif state == “sliding”
+	screen.blit(self.img, self.rect, (0,153,23,178))
+
+
+//fire mario
+If state == “Fstanding”:
+	screen.blit(self.img, self.rect, (0,0,17,34))
+elif state == “Fwalking”:
+	screen.blit(self.img, self.rect, (3,45,23,80))
+	screen.blit(self.img, self.rect, (29,46,49,80))
+	screen.blit(self.img, self.rect, (55,48,76,80))
+	screen.blit(self.img, self.rect, (83,46,103,80))
+elif state == “Frunning”
+	screen.blit(self.img, self.rect, (5,88,26,121))
+	screen.blit(self.img, self.rect, (36,87,58,120))
+	screen.blit(self.img, self.rect, (70,88,92,122))
+	screen.blit(self.img, self.rect, (98,88,124,122))
+elif state == “Fducking”
+	screen.blit(self.img, self.rect, (43,11,62,40))
+	screen.blit(self.img, self.rect, (69,15,87,40))
+elif state == “Fjumping”
+	screen.blit(self.img, self.rect, (0,121,20,151))
+	screen.blit(self.img, self.rect, (24,122,44,151))
+	screen.blit(self.img, self.rect, (49,123,67,152))
+elif state == “Fsliding”
+	screen.blit(self.img, self.rect, (5,229,29,262))
+elif state == “Fireball”
+	screen.blit(self.img, self.rect, (8,184,36,218))
+screen.blit(self.img, self.rect, (47,185,69,218))
+	screen.blit(self.img, self.rect, (77,186,114,218))
+
+
+
+
+Mario standing(1):
+0,0,17,34
+Mario Walking(4)
+0,35,14,66
+23,35,15,66
+46,35,37,66
+67,35,82,66
+Mario running(4)
+0,68,23,96
+25,69,48,98
+50,71,73,98
+77,71,100,98
+Mario ducking(2)
+0,98,17,119
+21,100,38,119
+Mario Jumping(3):
+0,121,20,151
+24,122,44,151
+49,123,67,152
+Mario sliding into DMs:
+0,153,23,178
+
+
+FireMario standing(1)
+7,5,28,39
+FireMario Walking(4)
+3,45,23,80
+29,46,49,80
+55,48,76,80
+83,46,103,80
+FireMario Running(4)
+5,88,26,121
+36,87,58,120
+70,88,92,122
+98,88,124,122
+FireMario Ducking(2)
+43,11,62,40
+69,15,87,40
+FireMario  shoot’n da fireballs(3)
+8,184,36,218
+47,185,69,218
+77,186,114,218
+
+
+FireMario sliding into DMs:
+5,229,29,262
+
+
+
