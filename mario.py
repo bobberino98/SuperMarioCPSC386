@@ -4,6 +4,8 @@ from gravity import Gravity
 
 
 class Mario(Sprite):
+    SPEED_CAP = 50
+    ACCEl_FACTOR = 5
     def __init__(self, screen, settings):
         super(Mario, self).__init__()
         self.screen = screen
