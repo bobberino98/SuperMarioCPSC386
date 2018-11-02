@@ -1,4 +1,3 @@
-import pygame
 from pygame.sprite import Sprite
 from gravity import Gravity
 from imagerect import ImageRect
@@ -66,10 +65,6 @@ class Mario(Sprite):
                 self.gamemap.scroll(self.speed)
             else:
                 self.rect.x += self.dir * self.speed
-
-
-
-            # self.direction = None
         else:
             self.decelerate()
             if self.rect.x > 0 and self.rect.right < self.screen_rect.width:
