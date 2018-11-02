@@ -1,4 +1,5 @@
 Art:
+	
 	Place clouds and background hills
 	Place blocks( question and normal)
 	Render ground
@@ -27,6 +28,7 @@ Art:
 	Castle
 
 Layout:
+	
 	Place clouds and background hills/bushes
 	Place blocks( question and normal)
 	Render ground
@@ -34,6 +36,7 @@ Layout:
 	Place enemies
 
 Logic:
+	
 	Screen scrolling( once mario hits center)
 	Mario acceleration
 	friction physics
@@ -60,6 +63,7 @@ Logic:
 	Music
 
 Classes:
+	
 	Main loop
 	State manager
 	Sound manager
