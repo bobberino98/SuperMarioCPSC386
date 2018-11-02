@@ -10,7 +10,8 @@ class Map:
         self.brick_columns = []
         self.settings = settings
         self.screen = screen
-        for x in range(36):  # start with 18 columns of bricks
+        self.dist = 0
+        for x in range(39):  # start with 18 columns of bricks
             self.add_column()
 
     def add_column(self):  # create a new column of bricks
@@ -28,6 +29,12 @@ class Map:
 
     def update(self):  # Update and then blit
         self.blitme()
+
+    def scroll(self, speed):
+        self.dist += speed
+        for column in self.brick_columns:   # Blit all bricks
+            for brick in column:
+                brick.im_rect.rect.x -= speed
 
     def blitme(self):   # Blit everything on the map
         for column in self.brick_columns:   # Blit all bricks

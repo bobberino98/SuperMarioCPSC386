@@ -4,4 +4,4 @@ class Gravity:
 
     @staticmethod
     def perform(item):
-        item.rect.y += 1 * 3.75
+        item.rect.y += 1 * 4.75

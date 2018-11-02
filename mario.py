@@ -8,7 +8,7 @@ class Mario(Sprite):
     SPEED_CAP = 5
     ACCEL_FACTOR = 0.025
     DECEL_FACTOR = 0.25
-    FALL_FACTOR = 0.25
+    FALL_FACTOR = 0.20
     TURN_FACTOR = 0.3
 
     def __init__(self, screen, settings, gamemap):
@@ -56,8 +56,12 @@ class Mario(Sprite):
                 self.turn()
 
             self.accelerate()
-            if self.rect.right < self.screen_rect.width:
+            if self.rect.centerx >= self.screen_rect.width/2:
+                self.gamemap.scroll(self.speed)
+            else:
                 self.rect.x += self.dir * self.speed
+
+
 
             # self.direction = None
         else:
