@@ -21,7 +21,7 @@ class Game:
     def play(self):
         while True:
             self.screen.fill(settings.color_mario_blue)
-            user_control.check_events()
+            user_control.check_events(self.mario)
             self.map.update()
             self.mario.update(self.map)
             pygame.display.flip()
