@@ -2,7 +2,7 @@ import pygame
 import sys
 
 
-<<<<<<< HEAD
+
 def check_events(mario):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -21,7 +21,8 @@ def check_events(mario):
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
             print("CLICK AT", mouse_x, mouse_y)
-=======
+
+
 class Controller:
     def __init__(self, mario):
         self.mario = mario
@@ -35,6 +36,7 @@ class Controller:
                 print("KEY DOWN")
                 self.check_keydown_events(event)
             elif event.type == pygame.KEYUP:
+                self.check_keyup_events(event)
                 print("KEY UP")
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -51,21 +53,16 @@ class Controller:
             self.mario.moving_right = False
             self.mario.moving_up = False
             self.mario.moving_down = False
-        elif event.key == pygame.K_UP:
-            self.mario.moving_up = True
-            self.mario.moving_left = False
-            self.mario.moving_down = False
-            self.mario.moving_right = False
 
-        elif event.key == pygame.K_DOWN:
-            self.mario.moving_down = True
-            self.mario.moving_left = False
-            self.mario.moving_right = False
-            self.mario.moving_up = False
-        elif event.key == pygame.K_q:
-            self.mario.create_portal(1)
-        elif event.key == pygame.K_e:
-            self.mario.create_portal(2)
         elif event.key == pygame.K_ESCAPE:
             sys.exit()
->>>>>>> 41ec6b6ce53e639f47278ed5c854a873f15e4204
+
+    def check_keyup_events(self, event):
+        if event.key == pygame.K_RIGHT:
+            self.mario.moving_right = False
+        elif event.key == pygame.K_LEFT:
+            self.mario.moving_left = False
+        elif event.key == pygame.K_UP:
+            self.mario.moving_up = False
+        elif event.key == pygame.K_DOWN:
+            self.mario.moving_down = False

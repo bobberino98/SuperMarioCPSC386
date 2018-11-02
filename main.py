@@ -1,6 +1,6 @@
 import pygame
 from settings import Settings
-import user_control
+from user_control import Controller
 from map import Map
 from mario import Mario
 
@@ -19,9 +19,10 @@ class Game:
         return settings.game_title
 
     def play(self):
+        user_control = Controller(self.mario)
         while True:
             self.screen.fill(settings.color_mario_blue)
-            user_control.check_events(self.mario)
+            user_control.check_events()
             self.map.update()
             self.mario.update(self.map)
             pygame.display.flip()
