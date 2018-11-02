@@ -7,7 +7,7 @@ class Mario(Sprite):
     SPEED_CAP = 5
     ACCEL_FACTOR = 0.025
     DECEL_FACTOR = 0.25
-    TURN_FACTOR = 0.5
+    TURN_FACTOR = 0.3
 
     def __init__(self, screen, settings):
         super(Mario, self).__init__()
@@ -28,14 +28,17 @@ class Mario(Sprite):
         if not gamemap.object_hit_ground(self):
             self.gravity.perform(self)
         if self.moving_left:
-            self.dir = -1
+            if self.dir == 1 and self.speed != 0:
+                self.turn()
 
             self.accelerate()
             self.rect.x += self.dir * self.speed
 
             # self.direction = None
         elif self.moving_right:
-            self.dir = 1
+            if self.dir == -1 and self.speed != 0:
+                self.turn()
+
             self.accelerate()
             self.rect.x += self.dir * self.speed
 
@@ -57,6 +60,13 @@ class Mario(Sprite):
             self.speed -= Mario.DECEL_FACTOR
         else:
             self.speed = 0
+
+    def turn(self):
+        if self.speed >= Mario.ACCEL_FACTOR:
+            self.speed -= Mario.TURN_FACTOR
+        else:
+            self.speed = 0
+            self.dir *= -1
 
     def blitme(self):   # Blit Mario
         self.screen.blit(self.image, self.rect)
