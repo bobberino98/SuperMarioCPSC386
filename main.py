@@ -13,7 +13,7 @@ class Game:
         pygame.display.set_caption(settings.game_title)
         self.screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
         self.map = Map(self.screen, settings)
-        self.mario = Mario(self.screen, settings)
+        self.mario = Mario(self.screen, settings, self.map)
 
     def __str__(self):
         return settings.game_title
