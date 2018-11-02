@@ -31,6 +31,7 @@ class Mario(Sprite):
         self.jumping = False
         self.jump_finished = False
         self.jump_speed = 0
+        self.jump_start = False
 
     def __str__(self):
         return 'Mario: x:' + str(self.rect.x) + ' y:' + str(self.rect.y)
@@ -38,6 +39,9 @@ class Mario(Sprite):
     def update(self, gamemap):  # Update and then blit
         if not self.jumping and not gamemap.object_hit_ground(self):
             self.gravity.perform(self)
+
+        if not self.jump_start and self.gamemap.object_hit_ground:
+            self.jump_start = True
         if self.jumping:
             self.jump()
         else:
@@ -70,6 +74,7 @@ class Mario(Sprite):
             self.decelerate()
             if self.rect.x > 0 and self.rect.right < self.screen_rect.width:
                 self.rect.x += self.dir * self.speed
+
         self.rect.y -= self.jump_speed
         self.im_rect.rect = self.rect
         self.blitme()

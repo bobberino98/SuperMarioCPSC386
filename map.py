@@ -11,27 +11,51 @@ class Map:
         self.settings = settings
         self.screen = screen
         self.dist = 0
-        for num in range(39):  # start with 18 columns of bricks
+        self.gapcols = [70, 71, 87, 88, 89, 156, 157]
+        self.b3cols = [21, 23, 25, 78, 80, 95, 101, 102, 119, 130, 131, 171, 172, 174]
+        self.b7cols = [81, 82, 83, 84, 85, 86, 87, 88, 92, 93, 94, 122, 123, 124, 129, 132]
+        self.q7cols = [23, 95, 110, 130, 131]
+        self.q3cols = [17, 22, 24, 79, 107, 110, 113, 173]
+        self.lpipe1cols = [29]
+        self.rpipe1cols = [30]
+
+        for num in range(224):  # start with 18 columns of bricks
             self.add_column(num)
 
     def add_column(self, num):  # create a new column of bricks
-        new_column = Group()
-        if len(self.brick_columns) == 0:
-            x = 0
-        else:
-            x = 32 * len(self.brick_columns)
-        for i in range(2):
-            brick_temp = brick.Brick(self.screen)
-            brick_temp.rect.x = x
-            brick_temp.rect.y = self.settings.brick_y_offset + (32 * i)
-            new_column.add(brick_temp)
-            if num == 17:
-                brick_temp = brick.QBrick(self.screen)
+        if num not in self.gapcols:
+            new_column = Group()
+            if len(self.brick_columns) == 0:
+                x = 0
+            else:
+                x = 32 * num
+            for i in range(2):
+                brick_temp = brick.Brick(self.screen)
                 brick_temp.rect.x = x
-                brick_temp.rect.y = self.settings.brick_y_offset - 96
+                brick_temp.rect.y = self.settings.brick_y_offset + (32 * i)
                 new_column.add(brick_temp)
+                if num in self.b3cols:
+                    brick_temp = brick.BreakBrick(self.screen)
+                    brick_temp.rect.x = x
+                    brick_temp.rect.y = self.settings.brick_y_offset - 96
+                    new_column.add(brick_temp)
+                if num in self.q3cols:
+                    brick_temp = brick.QBrick(self.screen)
+                    brick_temp.rect.x = x
+                    brick_temp.rect.y = self.settings.brick_y_offset - 96
+                    new_column.add(brick_temp)
+                if num in self.q7cols:
+                    brick_temp = brick.QBrick(self.screen)
+                    brick_temp.rect.x = x
+                    brick_temp.rect.y = self.settings.brick_y_offset - 32*7
+                    new_column.add(brick_temp)
+                if num in self.b7cols:
+                    brick_temp = brick.BreakBrick(self.screen)
+                    brick_temp.rect.x = x
+                    brick_temp.rect.y = self.settings.brick_y_offset - 32 * 7
+                    new_column.add(brick_temp)
 
-        self.brick_columns.append(new_column)
+            self.brick_columns.append(new_column)
 
     def update(self):  # Update and then blit
         self.blitme()
