@@ -14,7 +14,7 @@ class Game:
         pygame.display.set_caption(settings.game_title)
         self.screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
         self.map = Map(self.screen, settings)
-        self.background = ImageRect(self.screen, "background", settings.screen_width, settings.screen_height)
+        self.background = ImageRect(self.screen, "media/background", settings.screen_width, settings.screen_height)
         self.background.rect.left = 0
         self.background.rect.top = 0
         self.mario = Mario(self.screen, settings, self.map)
