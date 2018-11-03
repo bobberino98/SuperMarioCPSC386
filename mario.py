@@ -1,6 +1,7 @@
 from pygame.sprite import Sprite
 from gravity import Gravity
 from imagerect import ImageRect
+import pygame
 
 
 class Mario(Sprite):
@@ -17,7 +18,7 @@ class Mario(Sprite):
         self.settings = settings
         self.gravity = Gravity()
         self.gamemap = gamemap
-        self.img_rect = ImageRect(screen, "media/images/mario/regular", 32, 32)
+        self.img_rect = ImageRect(screen, "media/images/mario/standing", 35, 50)
 
         self.rect = self.img_rect.rect
         self.rect.y = self.screen_rect.top
@@ -31,11 +32,14 @@ class Mario(Sprite):
         self.jump_finished = False
         self.jump_speed = 0
         self.jump_start = False
+        self.last_img_update = pygame.time.get_ticks()
+        self.last_img_mode = 1
 
     def __str__(self):
         return 'Mario: x:' + str(self.rect.x) + ' y:' + str(self.rect.y)
 
     def update(self, gamemap):  # Update and then blit
+
         if not self.jumping and not gamemap.object_hit_brick(self):
             self.gravity.perform(self)
         if not self.jump_start and self.gamemap.object_hit_brick:
@@ -71,7 +75,25 @@ class Mario(Sprite):
                 self.rect.x += self.dir * self.speed
 
         self.rect.y -= self.jump_speed
-        self.img_rect.rect = self.rect
+
+        if pygame.time.get_ticks() - self.last_img_update >= 500:
+            if self.moving_right or self.moving_left:
+                img_string = "media/images/mario/walking_" + str(self.last_img_mode)
+                self.img_rect = ImageRect(self.screen, img_string, 35, 50)
+                self.img_rect.rect = self.rect
+                print("Updated " + img_string)
+            if not self.moving_right or not self.moving_left:
+                img_string = "media/images/mario/standing"
+                self.img_rect = ImageRect(self.screen, img_string, 35, 50)
+                self.img_rect.rect = self.rect
+            if self.last_img_mode == 4:
+                self.last_img_mode = 1
+            else:
+                self.last_img_mode += 1
+            self.last_img_update = pygame.time.get_ticks()
+        else:
+            self.img_rect.rect = self.rect
+
         self.blitme()
 
     def accelerate(self):
