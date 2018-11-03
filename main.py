@@ -3,7 +3,6 @@ from settings import Settings
 from user_control import Controller
 from map import Map
 from mario import Mario
-from imagerect import ImageRect
 
 
 settings = Settings()

@@ -17,9 +17,9 @@ class Mario(Sprite):
         self.settings = settings
         self.gravity = Gravity()
         self.gamemap = gamemap
-        self.im_rect = ImageRect(screen, "media/images/mario/regular", 32, 32)
+        self.img_rect = ImageRect(screen, "media/images/mario/regular", 32, 32)
 
-        self.rect = self.im_rect.rect
+        self.rect = self.img_rect.rect
         self.rect.y = self.screen_rect.top
         self.rect.x = self.screen_rect.left
         self.dist = 0
@@ -43,6 +43,8 @@ class Mario(Sprite):
             self.jump_start = True
         if self.jumping:
             self.jump()
+        elif self.jumping and gamemap.object_hit_ground(self):
+            self.jump()
         else:
             self.jump_speed = 0
         if self.moving_left:
@@ -54,7 +56,6 @@ class Mario(Sprite):
             if self.rect.x > 0:
                 self.rect.x += self.dir * self.speed
 
-            # self.direction = None
         elif self.moving_right:
             if self.dir == -1 and self.speed != 0:
                 self.turn()
@@ -71,7 +72,7 @@ class Mario(Sprite):
                 self.rect.x += self.dir * self.speed
 
         self.rect.y -= self.jump_speed
-        self.im_rect.rect = self.rect
+        self.img_rect.rect = self.rect
         self.blitme()
 
     def accelerate(self):
@@ -98,7 +99,6 @@ class Mario(Sprite):
         if not self.jump_finished:
             if self.jump_speed <= 0:
                 self.jump_speed = 7
-
             else:
                 self.jump_speed -= Mario.FALL_FACTOR
                 if self.jump_speed <= 0:
@@ -107,11 +107,10 @@ class Mario(Sprite):
                     self.jump_finished = True
 
                     self.jump_speed *= -1
-
         else:
             self.jump_speed -= Mario.FALL_FACTOR
             if self.gamemap.object_hit_ground(self):
                 self.jump_finished = False
 
-    def blitme(self):   # Blit Mario
-        self.im_rect.blitme()
+    def blitme(self):  # Blit Mario
+        self.img_rect.blitme()

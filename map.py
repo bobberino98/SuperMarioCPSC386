@@ -62,17 +62,19 @@ class Map:
 
     def scroll(self, speed):
         self.dist += speed
-        for column in self.brick_columns:   # Blit all bricks
+        for column in self.brick_columns:  # Blit all bricks
             for brick in column:
                 brick.im_rect.rect.x -= speed
 
-    def blitme(self):   # Blit everything on the map
+    def blitme(self):  # Blit everything on the map
         for column in self.brick_columns:   # Blit all bricks
-            for brick in column:
-                brick.im_rect.blitme()
+            for x in column:
+                x.im_rect.blitme()
 
     def object_hit_ground(self, item):
         for x in self.brick_columns:
             if pygame.sprite.spritecollideany(item, x):
-                # print(item.__str__() + " is touching the ground")
+                print(x)
+                #if item.rect.bottom == x.at(0).rect.top:
+                print(item.__str__() + " is touching the ground")
                 return True

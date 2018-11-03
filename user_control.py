@@ -9,10 +9,8 @@ class Controller:
     def check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-
                 self.check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self.check_keyup_events(event)
@@ -30,7 +28,6 @@ class Controller:
             self.mario.moving_down = False
         elif event.key == pygame.K_UP:
             self.mario.jumping = True
-
         elif event.key == pygame.K_ESCAPE:
             sys.exit()
 
