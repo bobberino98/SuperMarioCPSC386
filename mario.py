@@ -79,13 +79,15 @@ class Mario(Sprite):
         if pygame.time.get_ticks() - self.last_img_update >= 500:
             if self.moving_right or self.moving_left:
                 img_string = "media/images/mario/walking_" + str(self.last_img_mode)
-                self.img_rect = ImageRect(self.screen, img_string, 35, 50)
-                self.img_rect.rect = self.rect
+                self.img_rect.update(img_string, 35, 50)
+                self.img_rect.rect.x = self.rect.x
+                self.img_rect.rect.y = self.rect.y
                 print("Updated " + img_string)
             if not self.moving_right or not self.moving_left:
                 img_string = "media/images/mario/standing"
-                self.img_rect = ImageRect(self.screen, img_string, 35, 50)
-                self.img_rect.rect = self.rect
+                self.img_rect.update(img_string, 35, 50)
+                self.img_rect.rect.x = self.rect.x
+                self.img_rect.rect.y = self.rect.y
             if self.last_img_mode == 4:
                 self.last_img_mode = 1
             else:
