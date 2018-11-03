@@ -73,10 +73,10 @@ class Map:
             for x in column:
                 x.im_rect.blitme()
 
-    def object_hit_ground(self, item):
+    def object_hit_brick(self, item):
         for column in self.brick_columns:
                 for brick in column:
                     if pygame.sprite.collide_rect(item, brick):
                         if abs(brick.rect.top - item.rect.bottom) <= 10:
                             # print(item.__str__() + " is touching the ground")
-                            return True
+                            return True, "Floor"
