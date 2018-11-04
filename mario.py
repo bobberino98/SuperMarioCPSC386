@@ -1,7 +1,7 @@
 from pygame.sprite import Sprite
 from gravity import Gravity
-from imagerect import ImageRect
 import pygame
+import audio
 
 
 class Mario(Sprite):
@@ -18,11 +18,9 @@ class Mario(Sprite):
         self.settings = settings
         self.gravity = Gravity()
         self.gamemap = gamemap
-        self.img_rect = ImageRect(screen, "media/images/mario/standing", 35, 50)
-
-        self.rect = self.img_rect.rect
-        self.rect.y = self.screen_rect.top
-        self.rect.x = self.screen_rect.left
+        self.image = pygame.image.load("media/images/mario/standing.png")
+        self.image = pygame.transform.scale(self.image, (35, 50))
+        self.rect = self.image.get_rect()
         self.dist = 0
         self.speed = 0
         self.dir = 1
@@ -39,12 +37,12 @@ class Mario(Sprite):
         return 'Mario: x:' + str(self.rect.x) + ' y:' + str(self.rect.y)
 
     def update(self, gamemap):  # Update and then blit
-
         if not self.jumping and not gamemap.object_hit_brick(self):
             self.gravity.perform(self)
         if not self.jump_start and self.gamemap.object_hit_brick:
             self.jump_start = True
         if self.jumping:
+            audio.play(0)
             self.jump()
         elif self.jumping and gamemap.object_hit_brick(self):
             self.jump()
@@ -76,27 +74,28 @@ class Mario(Sprite):
 
         self.rect.y -= self.jump_speed
 
-        if pygame.time.get_ticks() - self.last_img_update >= 500:
+        self.animate()
+        self.blitme()
+
+    def animate(self):
+        if pygame.time.get_ticks() - self.last_img_update >= 50:
             if self.moving_right or self.moving_left:
-                img_string = "media/images/mario/walking_" + str(self.last_img_mode)
-                self.img_rect.update(img_string, 35, 50)
-                self.img_rect.rect.x = self.rect.x
-                self.img_rect.rect.y = self.rect.y
-                print("Updated " + img_string)
-            if not self.moving_right or not self.moving_left:
-                img_string = "media/images/mario/standing"
-                self.img_rect.update(img_string, 35, 50)
-                self.img_rect.rect.x = self.rect.x
-                self.img_rect.rect.y = self.rect.y
+                img_string = "media/images/mario/walking_" + str(self.last_img_mode) + ".png"
+                self.image = pygame.image.load(img_string)
+                self.image = pygame.transform.scale(self.image, (35, 50))
+                if self.dir == -1:
+                    self.image = pygame.transform.flip(self.image, 1, 0)
+            else:
+                img_string = "media/images/mario/standing.png"
+                self.image = pygame.image.load(img_string)
+                self.image = pygame.transform.scale(self.image, (35, 50))
+                if self.dir == -1:
+                    self.image = pygame.transform.flip(self.image, 1, 0)
             if self.last_img_mode == 4:
                 self.last_img_mode = 1
             else:
                 self.last_img_mode += 1
             self.last_img_update = pygame.time.get_ticks()
-        else:
-            self.img_rect.rect = self.rect
-
-        self.blitme()
 
     def accelerate(self):
         if self.speed == 0:
@@ -128,7 +127,6 @@ class Mario(Sprite):
                     self.jump_finished = True
                 elif self.gamemap.object_hit_brick(self):
                     self.jump_finished = True
-
                     self.jump_speed *= -1
         else:
             self.jump_speed -= Mario.FALL_FACTOR
@@ -136,4 +134,4 @@ class Mario(Sprite):
                 self.jump_finished = False
 
     def blitme(self):  # Blit Mario
-        self.img_rect.blitme()
+        self.screen.blit(self.image, self.rect)
