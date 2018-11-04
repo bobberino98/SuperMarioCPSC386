@@ -1,6 +1,8 @@
 from pygame.sprite import Group
 import pygame
 from brick import *
+from cloud import Cloud
+from imagerect import ImageRect
 
 
 class Map:
@@ -8,6 +10,7 @@ class Map:
         super(Map, self).__init__()
         self.brick_count = 80  # number of bricks to initially render
         self.brick_columns = []
+        self.clouds = []
         self.settings = settings
         self.screen = screen
         self.dist = 0
@@ -21,6 +24,29 @@ class Map:
 
         for num in range(224):  # Build each column
             self.add_column(num)
+
+        self.add_clouds()
+
+    def add_clouds(self):
+        # TODO
+        ''' This should be transformed into a loop such that
+        all clouds are generated at once '''
+
+        small = Cloud(self.screen, "small", 64, 48)
+        small.rect.x = 0
+        small.rect.y = 0
+        self.clouds.append(small)
+
+        small = Cloud(self.screen, "medium", 96, 48)
+        small.rect.x = 64
+        small.rect.y = 0
+        self.clouds.append(small)
+
+        small = Cloud(self.screen, "large", 128, 48)
+        small.rect.x = 160
+        small.rect.y = 0
+        self.clouds.append(small)
+
 
     def add_column(self, num):  # Create a new column of bricks
         if num in self.gapcols:
@@ -67,11 +93,16 @@ class Map:
         for column in self.brick_columns:  # Blit all bricks
             for brick in column:
                 brick.im_rect.rect.x -= speed
+        for cloud in self.clouds:
+            cloud.rect.x -= speed
 
     def blitme(self):  # Blit everything on the map
         for column in self.brick_columns:   # Blit all bricks
             for x in column:
                 x.im_rect.blitme()
+        for cloud in self.clouds:
+            cloud.blitme()
+
 
     def object_hit_brick(self, item):
         for column in self.brick_columns:
