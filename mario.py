@@ -42,7 +42,8 @@ class Mario(Sprite):
         if not self.jump_start and self.gamemap.object_hit_brick:
             self.jump_start = True
         if self.jumping:
-            audio.play(0)
+            if gamemap.object_hit_brick(self):
+                audio.play(0)
             self.jump()
         elif self.jumping and gamemap.object_hit_brick(self):
             self.jump()
