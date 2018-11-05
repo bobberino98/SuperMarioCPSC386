@@ -39,15 +39,15 @@ class Mario(Sprite):
     def update(self, gamemap):  # Update and then blit
         if not self.jumping and not gamemap.object_hit_brick(self):
             self.gravity.perform(self)
-        if not self.jump_start and self.gamemap.object_hit_brick:
-            self.jump_start = True
+
         if self.jumping:
             if gamemap.object_hit_brick(self):
                 audio.play(0)
             self.jump()
         elif self.jumping and gamemap.object_hit_brick(self):
             self.jump()
-        else:
+        elif self.gamemap.object_hit_brick:
+            self.jump_start = False
             self.jump_speed = 0
         if self.moving_left:
             if self.dir == 1 and self.speed != 0:
@@ -120,6 +120,7 @@ class Mario(Sprite):
 
     def jump(self):
         if not self.jump_finished:
+            self.jump_start = True
             if self.jump_speed <= 0:
                 self.jump_speed = 7
             else:
@@ -133,6 +134,7 @@ class Mario(Sprite):
             self.jump_speed -= Mario.FALL_FACTOR
             if self.gamemap.object_hit_brick(self):
                 self.jump_finished = False
+                self.jump_start = False
 
     def blitme(self):  # Blit Mario
         self.screen.blit(self.image, self.rect)

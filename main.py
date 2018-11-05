@@ -19,13 +19,14 @@ class Game:
         # self.background.rect.left = 0
         # self.background.rect.top = 0
         self.mario = Mario(self.screen, settings, self.map)
+        self.bgm = pygame.mixer.Sound("media/sounds/bgm.wav")
 
     def __str__(self):
         return settings.game_title
 
     def play(self):
         clock = pygame.time.Clock()
-
+        self.bgm.play(-1)
         user_control = Controller(self.mario)
         while True:
             self.screen.fill(settings.color_mario_blue)

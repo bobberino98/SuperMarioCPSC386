@@ -26,7 +26,7 @@ class Controller:
             self.mario.moving_right = False
             self.mario.moving_up = False
             self.mario.moving_down = False
-        elif event.key == pygame.K_UP:
+        elif event.key == pygame.K_UP and not self.mario.jump_start:
             self.mario.jumping = True
         elif event.key == pygame.K_ESCAPE:
             sys.exit()
