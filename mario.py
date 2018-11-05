@@ -49,7 +49,7 @@ class Mario(Sprite):
         elif self.gamemap.object_hit_brick:
             self.jump_start = False
             self.jump_speed = 0
-        if self.moving_left:
+        if self.moving_left and not self.gamemap.left_collide(self):
             if self.dir == 1 and self.speed != 0:
                 self.turn()
             elif self.dir == 0:
@@ -57,8 +57,9 @@ class Mario(Sprite):
             self.accelerate()
             if self.rect.x > 0:
                 self.rect.x += self.dir * self.speed
-
-        elif self.moving_right:
+        elif self.gamemap.left_collide(self):
+            self.speed = 0
+        elif self.moving_right and not self.gamemap.right_collide(self):
             if self.dir == -1 and self.speed != 0:
                 self.turn()
             elif self.dir == 0:
@@ -129,7 +130,7 @@ class Mario(Sprite):
                     self.jump_finished = True
                 elif self.gamemap.object_hit_brick(self):
                     self.jump_finished = True
-                    self.jump_speed *= -1
+
         else:
             self.jump_speed -= Mario.FALL_FACTOR
             if self.gamemap.object_hit_brick(self):

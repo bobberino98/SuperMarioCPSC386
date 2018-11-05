@@ -26,7 +26,7 @@ class Game:
 
     def play(self):
         clock = pygame.time.Clock()
-        self.bgm.play(-1)
+        # self.bgm.play(-1)
         user_control = Controller(self.mario)
         while True:
             self.screen.fill(settings.color_mario_blue)
