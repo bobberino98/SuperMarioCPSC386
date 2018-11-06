@@ -81,18 +81,27 @@ class Mario(Sprite):
 
     def animate(self):
         if pygame.time.get_ticks() - self.last_img_update >= 50:
-            if self.moving_right or self.moving_left:
-                img_string = "media/images/mario/walking_" + str(self.last_img_mode) + ".png"
+            if self.jumping:
+                img_string = "media/images/mario/jumping_1.png"
                 self.image = pygame.image.load(img_string)
                 self.image = pygame.transform.scale(self.image, (35, 50))
                 if self.dir == -1:
                     self.image = pygame.transform.flip(self.image, 1, 0)
+            elif self.moving_right or self.moving_left:
+                if self.gamemap.object_hit_brick:
+                    img_string = "media/images/mario/walking_" + str(self.last_img_mode) + ".png"
+                    self.image = pygame.image.load(img_string)
+                    self.image = pygame.transform.scale(self.image, (35, 50))
+                    if self.dir == -1:
+                        self.image = pygame.transform.flip(self.image, 1, 0)
+
             else:
                 img_string = "media/images/mario/standing.png"
                 self.image = pygame.image.load(img_string)
                 self.image = pygame.transform.scale(self.image, (35, 50))
                 if self.dir == -1:
                     self.image = pygame.transform.flip(self.image, 1, 0)
+
             if self.last_img_mode == 4:
                 self.last_img_mode = 1
             else:
