@@ -8,13 +8,14 @@ from pipe import Pipe
 
 
 class Map:
-    def __init__(self, screen, settings):
+    def __init__(self, screen, settings, enemies):
         super(Map, self).__init__()
         self.brick_count = 80  # number of bricks to initially render
         self.brick_columns = []
         self.clouds = []
         self.hills = []
         self.bushes = []
+        self.enemies = enemies
         self.settings = settings
         self.screen = screen
         self.dist = 0
@@ -40,6 +41,7 @@ class Map:
         self.cloudL = [28, 76, 124, 172]
         self.hillL = [1, 49, 97, 145, 193]
         self.hillS = [17, 65, 113, 161, 208]
+
         self.bushL = [12, 60, 108]
         self.bushM = [42, 90, 140]
         self.bushS = [24, 72, 120, 158, 168, 205, 215]
@@ -223,6 +225,8 @@ class Map:
             hill.rect.x -= speed
         for bush in self.bushes:
             bush.rect.x -= speed
+        for enemy in self.enemies:
+            enemy.rect.x -= speed
 
     def blitme(self):  # Blit everything on the map
         for cloud in self.clouds:
@@ -234,6 +238,7 @@ class Map:
         for column in self.brick_columns:   # Blit all bricks
             for x in column:
                 x.im_rect.blitme()
+
 
     def object_hit_brick(self, item):
         for column in self.brick_columns:
