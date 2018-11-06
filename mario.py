@@ -36,7 +36,7 @@ class Mario(Sprite):
     def __str__(self):
         return 'Mario: x:' + str(self.rect.x) + ' y:' + str(self.rect.y)
 
-    def update(self, gamemap):  # Update and then blit
+    def update(self, gamemap, delta):  # Update and then blit
         if not self.jumping and not gamemap.object_hit_brick(self):
             self.gravity.perform(self)
 
@@ -49,17 +49,16 @@ class Mario(Sprite):
         elif self.gamemap.object_hit_brick:
             self.jump_start = False
             self.jump_speed = 0
-        if self.moving_left and not self.gamemap.left_collide(self):
+        if self.moving_left:
             if self.dir == 1 and self.speed != 0:
                 self.turn()
             elif self.dir == 0:
                 self.dir = -1
             self.accelerate()
             if self.rect.x > 0:
-                self.rect.x += self.dir * self.speed
-        elif self.gamemap.left_collide(self):
-            self.speed = 0
-        elif self.moving_right and not self.gamemap.right_collide(self):
+                self.rect.x += self.dir * self.speed*delta
+
+        elif self.moving_right:
             if self.dir == -1 and self.speed != 0:
                 self.turn()
             elif self.dir == 0:
@@ -68,14 +67,14 @@ class Mario(Sprite):
             if self.rect.centerx >= self.screen_rect.width/2:
                 self.gamemap.scroll(self.speed)
             else:
-                self.rect.x += self.dir * self.speed
+                self.rect.x += self.dir * self.speed*delta
         else:
             self.decelerate()
             if self.rect.x > 0 and self.rect.right < self.screen_rect.width:
-                self.rect.x += self.dir * self.speed
+                self.rect.x += self.dir * self.speed*delta
 
-        self.rect.y -= self.jump_speed
-
+        self.rect.y -= self.jump_speed*delta
+        self.gamemap.collide(self)
         self.animate()
         self.blitme()
 

@@ -38,15 +38,29 @@ class Game:
         clock = pygame.time.Clock()
         # self.bgm.play(-1)
         user_control = Controller(self.mario)
+        time_per_tick = 1000 / 60
+        delta = 0
+        now = 0
+        last_time = pygame.time.get_ticks()
+        timer = 0
+        ticks = 0
         while True:
-            self.screen.fill(settings.color_mario_blue)
-            # self.background.blitme()
-            user_control.check_events()
-            self.map.update()
-            self.mario.update(self.map)
-            for x in self.enemies:
-                x.update()
-            pygame.display.flip()
+            now = pygame.time.get_ticks()
+            delta += (now-last_time)/time_per_tick
+            timer += now-last_time
+            last_time = now
+            if delta >= 1:
+
+                self.screen.fill(settings.color_mario_blue)
+                # self.background.blitme()
+                user_control.check_events()
+                self.map.update()
+                self.mario.update(self.map, delta)
+                for x in self.enemies:
+                    x.update(delta)
+                pygame.display.flip()
+                ticks += 1
+                delta = 0
             clock.tick(60)
 
 

@@ -20,10 +20,10 @@ class Enemy(Sprite):
             self.rect.x = x
             self.rect.y = self.settings.brick_y_offset - 32
 
-    def update(self):
+    def update(self, delta):
         if self.rect.x - self.mario.rect.x < self.screen_rect.width and self.map.object_hit_brick(self):
-            self.rect.x -= self.speed
-        if self.map.left_collide(self) or self.map.right_collide(self):
+            self.rect.x -= self.speed*delta
+        if self.map.enemy_collide(self):
             self.speed *= -1
         elif not self.map.object_hit_brick(self):
             Gravity.perform(self)

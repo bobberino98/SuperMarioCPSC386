@@ -239,7 +239,6 @@ class Map:
             for x in column:
                 x.im_rect.blitme()
 
-
     def object_hit_brick(self, item):
         for column in self.brick_columns:
                 for brick in column:
@@ -248,20 +247,28 @@ class Map:
                             # print(item.__str__() + " is touching the ground")
                             return True, "Floor"
 
-    def left_collide(self, item):
-        for column in self.brick_columns:
-                for brick in column:
-                    if brick.type != "floor":
-                        if pygame.sprite.collide_rect(item, brick) and item.rect.bottom > brick.rect.top + 1:
-                            if abs(brick.rect.left - item.rect.right) <= 10:
-                                # print(item.__str__() + " is touching the ground")
-                                return True, "Left"
-
-    def right_collide(self, item):
+    def enemy_collide(self, item):
         for column in self.brick_columns:
                 for brick in column:
                     if brick.type != "floor":
                         if pygame.sprite.collide_rect(item, brick):
-                            if abs(brick.rect.right - item.rect.left) <= 10 and item.rect.bottom > brick.rect.top + 1:
+                            return True
+
+    def collide(self, item):
+        for column in self.brick_columns:
+                for brick in column:
+                    if brick.type != "floor":
+                        if pygame.sprite.collide_rect(item, brick):
                                 # print(item.__str__() + " is touching the ground")
-                                return True, "Right"
+
+                                if item.jump_speed > 0:
+                                    item.rect.top = brick.rect.bottom
+
+                                elif item.speed > 0 and item.rect.centery > brick.rect.top:
+                                    item.rect.right = brick.rect.left
+                                elif item.speed < 0 and item.rect.centery > brick.rect.top:
+                                    item.rect.right = brick.rect.right
+
+                                return True
+
+
