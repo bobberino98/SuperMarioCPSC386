@@ -23,6 +23,8 @@ class Enemy(Sprite):
     def update(self):
         if self.rect.x - self.mario.rect.x < self.screen_rect.width and self.map.object_hit_brick(self):
             self.rect.x -= self.speed
+        if self.map.left_collide(self) or self.map.right_collide(self):
+            self.speed *= -1
         elif not self.map.object_hit_brick(self):
             Gravity.perform(self)
         self.im_rect.blitme()
