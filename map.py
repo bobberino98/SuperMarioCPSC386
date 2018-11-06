@@ -2,7 +2,8 @@ from pygame.sprite import Group
 import pygame
 from brick import *
 from cloud import Cloud
-
+from hill import Hill
+from bush import Bush
 from pipe import Pipe
 
 
@@ -12,6 +13,8 @@ class Map:
         self.brick_count = 80  # number of bricks to initially render
         self.brick_columns = []
         self.clouds = []
+        self.hills = []
+        self.bushes = []
         self.settings = settings
         self.screen = screen
         self.dist = 0
@@ -31,31 +34,76 @@ class Map:
         self.stair6 = [189]
         self.stair7 = [190]
         self.stair8 = [191, 192]
+        self.cloudS1 = [9, 57, 105, 153, 201]
+        self.cloudS2 = [20, 68, 116, 164, 212]
+        self.cloudM = [37, 85, 133, 181]
+        self.cloudL = [28, 76, 124, 172]
+        self.hillL = [1, 49, 97, 145, 193]
+        self.hillS = [17, 65, 113, 161, 208]
+        self.bushL = [12, 60, 108]
+        self.bushM = [42, 90, 140]
+        self.bushS = [24, 72, 120, 158, 168, 205, 215]
 
         for num in range(224):  # Build each column
             self.add_column(num)
 
         self.add_clouds()
+        self.add_hills()
+        self.add_bushes()
 
     def add_clouds(self):
         # TODO
         ''' This should be transformed into a loop such that
         all clouds are generated at once '''
+        for x in self.cloudS1:
+            small = Cloud(self.screen, "small", 64, 48)
+            small.rect.x = x*32
+            small.rect.y = 96
+            self.clouds.append(small)
+        for x in self.cloudS2:
+            small = Cloud(self.screen, "small", 64, 48)
+            small.rect.x = x * 32
+            small.rect.y = 64
+            self.clouds.append(small)
+        for x in self.cloudM:
+            small = Cloud(self.screen, "medium", 96, 48)
+            small.rect.x = x*32
+            small.rect.y = 64
+            self.clouds.append(small)
+        for x in self.cloudL:
+            small = Cloud(self.screen, "large", 128, 48)
+            small.rect.x = x*32
+            small.rect.y = 96
+            self.clouds.append(small)
 
-        small = Cloud(self.screen, "small", 64, 48)
-        small.rect.x = 0
-        small.rect.y = 0
-        self.clouds.append(small)
+    def add_hills(self):
+        for x in self.hillS:
+            hill = Hill(self.screen, "small", 96, 64)
+            hill.rect.x = x*32
+            hill.rect.y = self.settings.brick_y_offset - 64
+            self.hills.append(hill)
+        for x in self.hillL:
+            hill = Hill(self.screen, "large", 160, 96)
+            hill.rect.x = x*32
+            hill.rect.y = self.settings.brick_y_offset - 96
+            self.hills.append(hill)
 
-        small = Cloud(self.screen, "medium", 96, 48)
-        small.rect.x = 64
-        small.rect.y = 0
-        self.clouds.append(small)
-
-        small = Cloud(self.screen, "large", 128, 48)
-        small.rect.x = 160
-        small.rect.y = 0
-        self.clouds.append(small)
+    def add_bushes(self):
+        for x in self.bushS:
+            bush = Bush(self.screen, "small", 96, 32)
+            bush.rect.x = x * 32
+            bush.rect.y = self.settings.brick_y_offset - 32
+            self.bushes.append(bush)
+        for x in self.bushM:
+            bush = Bush(self.screen, "medium", 128, 32)
+            bush.rect.x = x * 32
+            bush.rect.y = self.settings.brick_y_offset - 32
+            self.bushes.append(bush)
+        for x in self.bushL:
+            bush = Bush(self.screen, "large", 160, 32)
+            bush.rect.x = x * 32
+            bush.rect.y = self.settings.brick_y_offset - 32
+            self.bushes.append(bush)
 
     def add_column(self, num):  # Create a new column of bricks
         if num in self.gapcols:
@@ -83,6 +131,11 @@ class Map:
                     new_column.add(brick_temp)
                 if num in self.q7cols:
                     brick_temp = QBrick(self.screen)
+                    brick_temp.rect.x = x
+                    brick_temp.rect.y = self.settings.brick_y_offset - 32 * 7
+                    new_column.add(brick_temp)
+                if num in self.b7cols:
+                    brick_temp = BreakBrick(self.screen)
                     brick_temp.rect.x = x
                     brick_temp.rect.y = self.settings.brick_y_offset - 32 * 7
                     new_column.add(brick_temp)
@@ -166,13 +219,21 @@ class Map:
                 brick.im_rect.rect.x -= speed
         for cloud in self.clouds:
             cloud.rect.x -= speed
+        for hill in self.hills:
+            hill.rect.x -= speed
+        for bush in self.bushes:
+            bush.rect.x -= speed
 
     def blitme(self):  # Blit everything on the map
+        for cloud in self.clouds:
+            cloud.blitme()
+        for hill in self.hills:
+            hill.blitme()
+        for bush in self.bushes:
+            bush.blitme()
         for column in self.brick_columns:   # Blit all bricks
             for x in column:
                 x.im_rect.blitme()
-        for cloud in self.clouds:
-            cloud.blitme()
 
     def object_hit_brick(self, item):
         for column in self.brick_columns:
@@ -190,6 +251,7 @@ class Map:
                             if abs(brick.rect.left - item.rect.right) <= 10:
                                 # print(item.__str__() + " is touching the ground")
                                 return True, "Left"
+
     def right_collide(self, item):
         for column in self.brick_columns:
                 for brick in column:
