@@ -19,7 +19,7 @@ class Game:
         self.enemies = []
         goomba_bot = [23, 41, 52, 53, 98, 99, 115, 116, 125, 126, 129, 130, 200, 201]
         goomba_top = [81, 83]
-        self.map = Map(self.screen, settings)
+        self.map = Map(self.screen, settings, self.enemies)
         self.mario = Mario(self.screen, settings, self.map)
         for x in goomba_bot:
             goomba = Enemy(self.screen, self.mario, settings, self.map, 'g', x * 32)
@@ -56,8 +56,8 @@ class Game:
                 user_control.check_events()
                 self.map.update()
                 self.mario.update(self.map, delta)
-                for x in self.enemies:
-                    x.update(delta)
+                #for x in self.enemies:
+                   # x.update(delta)
                 pygame.display.flip()
                 ticks += 1
                 delta = 0

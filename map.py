@@ -261,13 +261,17 @@ class Map:
                         if pygame.sprite.collide_rect(item, brick):
                                 # print(item.__str__() + " is touching the ground")
 
-                                if item.jump_speed > 0:
+                                if item.jump_speed > 0 and item.rect.bottom > brick.rect.bottom:
                                     item.rect.top = brick.rect.bottom
+                                    item.speed = 0
 
-                                elif item.speed > 0 and item.rect.centery > brick.rect.top:
+                                elif item.speed*item.dir > 0 and item.rect.centery + 10 > brick.rect.top:
                                     item.rect.right = brick.rect.left
-                                elif item.speed < 0 and item.rect.centery > brick.rect.top:
-                                    item.rect.right = brick.rect.right
+                                    item.speed = 0
+                                elif item.speed * item.dir < 0 and item.rect.centery + 10 > brick.rect.top:
+                                    item.rect.left = brick.rect.right
+                                    item.decelerate()
+                                    item.speed = 0
 
                                 return True
 
