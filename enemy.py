@@ -14,7 +14,7 @@ class Enemy(Sprite):
         self.settings = settings
         self.gamemap = gamemap
         if en_type == 'g':
-            self.filename = "media/images/enemy/goomba"
+            self.filename = "media/images/enemy/1"
             self.im_rect = ImageRect(screen, self.filename, 32, 32)
             self.rect = self.im_rect.rect
             self.rect.x = x
