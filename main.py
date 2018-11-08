@@ -4,7 +4,8 @@ from user_control import Controller
 from map import Map
 from mario import Mario
 from enemy import Enemy
-
+from stats import Stats
+from scoreboard import Scoreboard
 settings = Settings()
 
 
@@ -15,7 +16,8 @@ class Game:
 
         pygame.display.set_caption(settings.game_title)
         self.screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
-
+        self.stats = Stats(settings)
+        self.scoreboard = Scoreboard(settings, self.screen, self.stats)
         self.enemies = []
         goomba_bot = [23, 41, 52, 53, 98, 99, 115, 116, 125, 126, 129, 130, 200, 201]
         goomba_top = [81, 83]
@@ -53,6 +55,9 @@ class Game:
                 self.screen.fill(settings.color_mario_blue)
                 user_control.check_events()
                 self.map.update()
+                self.scoreboard.prep_score()
+
+                self.scoreboard.show_score()
                 self.mario.update(self.map, delta)
                 # for x in self.enemies:
                 #   x.update(delta)
