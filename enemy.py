@@ -49,14 +49,14 @@ class Enemy(Sprite):
         self.blitme()
 
     def animate(self):
-        if pygame.time.get_ticks() - self.last_img_update >= 50:
+        if pygame.time.get_ticks() - self.last_img_update >= 100:
             if self.walking:
                 img_string = "media/images/enemy/goomba/" + str(self.last_img_mode) + ".png"
                 self.image = pygame.image.load(img_string)
                 self.image = pygame.transform.scale(self.image, (32, 32))
                 if self.speed == -1:
                     self.image = pygame.transform.flip(self.image, 1, 0)
-            if self.last_img_mode == 4:
+            if self.last_img_mode == 2:
                 self.last_img_mode = 1
             else:
                 self.last_img_mode += 1
