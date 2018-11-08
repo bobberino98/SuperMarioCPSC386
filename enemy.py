@@ -4,7 +4,7 @@ from gravity import Gravity
 
 
 class Enemy(Sprite):
-    def __init__(self, screen, mario, settings, gamemap, en_type, x, y):
+    def __init__(self, screen, mario, settings, gamemap, enemy_type, x, y):
         super(Enemy, self).__init__()
 
         self.screen = screen
@@ -12,13 +12,17 @@ class Enemy(Sprite):
         self.speed = 1
         self.mario = mario
         self.settings = settings
+        self.enemy_type = enemy_type
         self.gamemap = gamemap
-        if en_type == 'g':
+        if self.enemy_type == 'g':
             self.filename = "media/images/enemy/1"
             self.im_rect = ImageRect(screen, self.filename, 32, 32)
             self.rect = self.im_rect.rect
             self.rect.x = x
             self.rect.y = y
+
+    def __str__(self):
+        return "Enemy of type:" + self.enemy_type
 
     def update(self, delta):
         if self.rect.x - self.mario.rect.x < self.screen_rect.width and self.gamemap.object_hit_brick(self):

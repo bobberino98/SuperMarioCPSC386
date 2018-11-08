@@ -19,14 +19,13 @@ class Game:
         self.stats = Stats(settings)
         self.scoreboard = Scoreboard(settings, self.screen, self.stats)
         self.enemies = []
-        goomba_bot = [23, 41, 52, 53, 98, 99, 115, 116, 125, 126, 129, 130, 200, 201]
-        goomba_top = [81, 83]
+
         self.map = Map(self.screen, settings, self.enemies)
         self.mario = Mario(self.screen, settings, self.map)
-        for x in goomba_bot:
+        for x in settings.goomba_bottom:
             goomba = Enemy(self.screen, self.mario, settings, self.map, 'g', x * 32, settings.brick_y_offset - 32)
             self.enemies.append(goomba)
-        for x in goomba_top:
+        for x in settings.goomba_top:
             goomba = Enemy(self.screen, self.mario, settings, self.map, 'g', x * 32, settings.brick_y_offset - 8*32)
             self.enemies.append(goomba)
 
@@ -34,6 +33,18 @@ class Game:
 
     def __str__(self):
         return settings.game_title
+
+    ''' Removes items from memory once they've gone offscreen. Helps save memory and improve efficiency.
+    Currently only tested to work on lists containing objects of class Enemy'''
+    @staticmethod
+    def remove_unused_items(self, items):
+        for item in items:
+            if item.rect.right < 0:
+                print("Removing " + item.__str__() + " for being left of user game view")
+                items.remove(item)
+            if item.rect.top > self.screen.get_rect().bottom:
+                print("Removing " + item.__str__() + " for falling out of user game view")
+                items.remove(item)
 
     def play(self):
         clock = pygame.time.Clock()
@@ -59,12 +70,13 @@ class Game:
 
                 self.scoreboard.show_score()
                 self.mario.update(self.map, delta)
-                # for x in self.enemies:
-                #   x.update(delta)
+                for x in self.enemies:
+                    x.update(delta)
                 pygame.display.flip()
                 ticks += 1
                 delta = 0
             clock.tick(60)
+            self.remove_unused_items(self, self.enemies)
 
 
 game = Game()
