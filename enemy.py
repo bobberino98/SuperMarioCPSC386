@@ -1,6 +1,7 @@
 from pygame.sprite import Sprite
 from imagerect import ImageRect
 from gravity import Gravity
+import pygame
 
 
 class Enemy(Sprite):
@@ -14,10 +15,13 @@ class Enemy(Sprite):
         self.settings = settings
         self.enemy_type = enemy_type
         self.gamemap = gamemap
+        self.last_img_update = pygame.time.get_ticks()
+        self.last_img_mode = 1
+        self.walking = False
         if self.enemy_type == 'g':
-            self.filename = "media/images/enemy/1"
-            self.im_rect = ImageRect(screen, self.filename, 32, 32)
-            self.rect = self.im_rect.rect
+            img_string = "media/images/enemy/goomba/" + str(self.last_img_mode) + ".png"
+            self.image = pygame.image.load(img_string)
+            self.rect = self.image.get_rect()
             self.rect.x = x
             self.rect.y = y
 
@@ -25,10 +29,38 @@ class Enemy(Sprite):
         return "Enemy of type:" + self.enemy_type
 
     def update(self, delta):
+
+        # Walking left
         if self.rect.x - self.mario.rect.x < self.screen_rect.width and self.gamemap.object_hit_brick(self):
             self.rect.x -= self.speed*delta
+            self.walking = True
+        else:
+            self.walking = False
+
+        # Change direction on collision? Please clarify
         if self.gamemap.enemy_collide(self):
             self.speed *= -1
+
+        # Gravity always on
         elif not self.gamemap.object_hit_brick(self):
             Gravity.perform(self)
-        self.im_rect.blitme()
+
+        self.animate()
+        self.blitme()
+
+    def animate(self):
+        if pygame.time.get_ticks() - self.last_img_update >= 50:
+            if self.walking:
+                img_string = "media/images/enemy/goomba/" + str(self.last_img_mode) + ".png"
+                self.image = pygame.image.load(img_string)
+                self.image = pygame.transform.scale(self.image, (32, 32))
+                if self.speed == -1:
+                    self.image = pygame.transform.flip(self.image, 1, 0)
+            if self.last_img_mode == 4:
+                self.last_img_mode = 1
+            else:
+                self.last_img_mode += 1
+            self.last_img_update = pygame.time.get_ticks()
+
+    def blitme(self):  # Blit enemy
+        self.screen.blit(self.image, self.rect)
