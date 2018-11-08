@@ -54,9 +54,6 @@ class Map:
         self.add_bushes()
 
     def add_clouds(self):
-        # TODO
-        ''' This should be transformed into a loop such that
-        all clouds are generated at once '''
         for x in self.cloudS1:
             small = Cloud(self.screen, "small", 64, 48)
             small.rect.x = x*32
@@ -296,7 +293,8 @@ class Map:
                         if pygame.sprite.collide_rect(item, brick):
                             return self.collide_helper(item, brick)
 
-    def collide_helper(self, item, brick):
+    @staticmethod
+    def collide_helper(item, brick):
 
             # print(item.__str__() + " is touching the ground")
 

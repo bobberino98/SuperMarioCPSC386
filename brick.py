@@ -41,4 +41,3 @@ class StairBrick(Sprite):
         self.im_rect = ImageRect(screen, "media/images/brick/stair_brick_"+str(num), 32, 32*num)
         self.type = "stair_"+str(num)
         self.rect = self.im_rect.rect
-
