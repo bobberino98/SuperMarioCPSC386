@@ -35,10 +35,10 @@ class BreakBrick(Sprite):  # Floating bricks
 
 
 class StairBrick(Sprite):
-    def __init__(self, screen):
+    def __init__(self, screen, num):
         super(StairBrick, self).__init__()
         self.screen = screen
-        self.im_rect = ImageRect(screen, "media/images/brick/stair_brick", 32, 32)
-        self.type = "stair"
+        self.im_rect = ImageRect(screen, "media/images/brick/stair_brick_"+str(num), 32, 32*num)
+        self.type = "stair_"+str(num)
         self.rect = self.im_rect.rect
 

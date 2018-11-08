@@ -162,52 +162,52 @@ class Map:
                     brick_temp.rect.y = self.settings.brick_y_offset - 128
                     new_column.add(brick_temp)
                 if num in self.stair1:
-                    brick_temp = StairBrick(self.screen)
+                    brick_temp = StairBrick(self.screen, 1)
                     brick_temp.rect.x = x
                     brick_temp.rect.y = self.settings.brick_y_offset - 32
                     new_column.add(brick_temp)
                 if num in self.stair2:
-                    for n in range(2):
-                        brick_temp = StairBrick(self.screen)
-                        brick_temp.rect.x = x
-                        brick_temp.rect.y = self.settings.brick_y_offset - (n+1)*32
-                        new_column.add(brick_temp)
+
+                    brick_temp = StairBrick(self.screen, 2)
+                    brick_temp.rect.x = x
+                    brick_temp.rect.y = self.settings.brick_y_offset - 64
+                    new_column.add(brick_temp)
                 if num in self.stair3:
-                    for n in range(3):
-                        brick_temp = StairBrick(self.screen)
-                        brick_temp.rect.x = x
-                        brick_temp.rect.y = self.settings.brick_y_offset - (n+1)*32
-                        new_column.add(brick_temp)
+
+                    brick_temp = StairBrick(self.screen, 3)
+                    brick_temp.rect.x = x
+                    brick_temp.rect.y = self.settings.brick_y_offset - 96
+                    new_column.add(brick_temp)
                 if num in self.stair4:
-                    for n in range(4):
-                        brick_temp = StairBrick(self.screen)
-                        brick_temp.rect.x = x
-                        brick_temp.rect.y = self.settings.brick_y_offset - (n+1)*32
-                        new_column.add(brick_temp)
+
+                    brick_temp = StairBrick(self.screen, 4)
+                    brick_temp.rect.x = x
+                    brick_temp.rect.y = self.settings.brick_y_offset - 128
+                    new_column.add(brick_temp)
                 if num in self.stair5:
-                    for n in range(5):
-                        brick_temp = StairBrick(self.screen)
-                        brick_temp.rect.x = x
-                        brick_temp.rect.y = self.settings.brick_y_offset - (n+1)*32
-                        new_column.add(brick_temp)
+
+                    brick_temp = StairBrick(self.screen, 5)
+                    brick_temp.rect.x = x
+                    brick_temp.rect.y = self.settings.brick_y_offset - 160
+                    new_column.add(brick_temp)
                 if num in self.stair6:
-                    for n in range(6):
-                        brick_temp = StairBrick(self.screen)
-                        brick_temp.rect.x = x
-                        brick_temp.rect.y = self.settings.brick_y_offset - (n+1)*32
-                        new_column.add(brick_temp)
+
+                    brick_temp = StairBrick(self.screen, 6)
+                    brick_temp.rect.x = x
+                    brick_temp.rect.y = self.settings.brick_y_offset - 192
+                    new_column.add(brick_temp)
                 if num in self.stair7:
-                    for n in range(7):
-                        brick_temp = StairBrick(self.screen)
-                        brick_temp.rect.x = x
-                        brick_temp.rect.y = self.settings.brick_y_offset - (n+1)*32
-                        new_column.add(brick_temp)
+
+                    brick_temp = StairBrick(self.screen, 7)
+                    brick_temp.rect.x = x
+                    brick_temp.rect.y = self.settings.brick_y_offset - 224
+                    new_column.add(brick_temp)
                 if num in self.stair8:
-                    for n in range(8):
-                        brick_temp = StairBrick(self.screen)
-                        brick_temp.rect.x = x
-                        brick_temp.rect.y = self.settings.brick_y_offset - (n+1)*32
-                        new_column.add(brick_temp)
+
+                    brick_temp = StairBrick(self.screen, 8)
+                    brick_temp.rect.x = x
+                    brick_temp.rect.y = self.settings.brick_y_offset - 256
+                    new_column.add(brick_temp)
 
             self.brick_columns.append(new_column)
 
@@ -257,22 +257,61 @@ class Map:
     def collide(self, item):
         for column in self.brick_columns:
                 for brick in column:
-                    if brick.type != "floor":
+                    if item.rect.bottom < self.settings.brick_y_offset - 192:
+                        if brick.type != "stair_7":
+                            if pygame.sprite.collide_rect(item, brick):
+                                return self.collide_helper(item, brick)
+
+                    elif item.rect.bottom < self.settings.brick_y_offset - 160:
+                        if brick.type != "stair_6":
+                            if pygame.sprite.collide_rect(item, brick):
+                                return self.collide_helper(item, brick)
+
+                    elif item.rect.bottom < self.settings.brick_y_offset - 128:
+                        if brick.type != "stair_5":
+                            if pygame.sprite.collide_rect(item, brick):
+                                return self.collide_helper(item, brick)
+
+                    elif item.rect.bottom < self.settings.brick_y_offset - 96:
+                        if brick.type != "stair_4":
+                            if pygame.sprite.collide_rect(item, brick):
+                                return self.collide_helper(item, brick)
+
+                    elif item.rect.bottom < self.settings.brick_y_offset - 64:
+                        if brick.type != "stair_3":
+                            if pygame.sprite.collide_rect(item, brick):
+                                return self.collide_helper(item, brick)
+
+                    elif item.rect.bottom < self.settings.brick_y_offset - 32:
+                        if brick.type != "stair_2":
+                            if pygame.sprite.collide_rect(item, brick):
+                                return self.collide_helper(item, brick)
+
+                    elif item.rect.bottom < self.settings.brick_y_offset:
+                        if brick.type != "stair_1":
+                            if pygame.sprite.collide_rect(item, brick):
+                                return self.collide_helper(item, brick)
+
+                    elif brick.type != "floor":
                         if pygame.sprite.collide_rect(item, brick):
-                                # print(item.__str__() + " is touching the ground")
+                            return self.collide_helper(item, brick)
 
-                                if item.jump_speed > 0 and item.rect.bottom > brick.rect.bottom:
-                                    item.rect.top = brick.rect.bottom
-                                    item.speed = 0
+    def collide_helper(self, item, brick):
 
-                                elif item.speed*item.dir > 0 and item.rect.centery + 10 > brick.rect.top:
-                                    item.rect.right = brick.rect.left
-                                    item.speed = 0
-                                elif item.speed * item.dir < 0 and item.rect.centery + 10 > brick.rect.top:
-                                    item.rect.left = brick.rect.right
-                                    item.decelerate()
-                                    item.speed = 0
+            # print(item.__str__() + " is touching the ground")
 
-                                return True
+            if item.jump_speed > 0 and item.rect.bottom > brick.rect.bottom:
+                item.rect.top = brick.rect.bottom
+                item.speed = 0
 
+            elif item.speed * item.dir > 0 and item.rect.centery > brick.rect.top:
+                item.rect.right = brick.rect.left
+                item.decelerate()
+                item.speed = 0
 
+            elif item.speed * item.dir < 0 and item.rect.centery > brick.rect.top:
+                item.rect.left = brick.rect.right
+                item.decelerate()
+                item.speed = 0
+
+            return True

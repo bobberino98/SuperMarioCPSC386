@@ -65,6 +65,7 @@ class Mario(Sprite):
                 self.dir = 1
             self.accelerate()
             if self.rect.centerx >= self.screen_rect.width/2:
+
                 self.gamemap.scroll(self.speed)
             else:
                 self.rect.x += self.dir * self.speed*delta
@@ -72,6 +73,8 @@ class Mario(Sprite):
             self.decelerate()
             if self.rect.x > 0 and self.rect.right < self.screen_rect.width:
                 self.rect.x += self.dir * self.speed*delta
+            if self.rect.centerx >= self.screen_rect.width / 2:
+                self.gamemap.scroll(self.speed)
 
         self.rect.y -= self.jump_speed*delta
         self.gamemap.collide(self)
