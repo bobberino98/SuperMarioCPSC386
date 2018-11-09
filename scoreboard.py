@@ -11,7 +11,7 @@ class Scoreboard:
         self.stats = stats
 
         self.text_color = (255, 255, 255)
-        self. font = pygame.font.SysFont(None, 48)
+        self.font = pygame.font.SysFont(None, 88)
 
         rounded_score = int(round(self.stats.score, -1))
         score_str = "{:,}".format(rounded_score)

@@ -16,7 +16,7 @@ class Game:
 
         pygame.display.set_caption(settings.game_title)
         self.screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
-        self.stats = Stats(settings)
+        self.stats = Stats()
         self.scoreboard = Scoreboard(settings, self.screen, self.stats)
         self.enemies = []
 
@@ -40,10 +40,10 @@ class Game:
     def remove_unused_items(self, items):
         for item in items:
             if item.rect.right < 0:
-                print("Removing " + item.__str__() + " for being left of user game view")
+                # print("Removing " + item.__str__() + " for being left of user game view")
                 items.remove(item)
             if item.rect.top > self.screen.get_rect().bottom:
-                print("Removing " + item.__str__() + " for falling out of user game view")
+                # print("Removing " + item.__str__() + " for falling out of user game view")
                 items.remove(item)
 
     def play(self):
