@@ -18,16 +18,9 @@ class Game:
         self.stats = Stats()
         self.scoreboard = Scoreboard(settings, self.screen, self.stats)
         self.enemies = []
-
         self.map = Map(self.screen, settings, self.enemies)
         self.mario = Mario(self.screen, settings, self.map)
-        for x in settings.goomba_bottom:
-            goomba = Enemy(self.screen, self.mario, settings, self.map, 'g', x * 32, settings.brick_y_offset - 32)
-            self.enemies.append(goomba)
-        for x in settings.goomba_top:
-            goomba = Enemy(self.screen, self.mario, settings, self.map, 'g', x * 32, settings.brick_y_offset - 8*32)
-            self.enemies.append(goomba)
-
+        self.reset_enemies()
         self.bgm = pygame.mixer.Sound("media/sounds/bgm.wav")
 
     def __str__(self):
@@ -45,6 +38,16 @@ class Game:
                 # print("Removing " + item.__str__() + " for falling out of user game view")
                 items.remove(item)
 
+    '''Clears the enemies list and rebuilds it from scratch'''
+    def reset_enemies(self):
+        self.enemies.clear()
+        for x in settings.goomba_bottom:
+            goomba = Enemy(self.screen, self.mario, settings, self.map, 'g', x * 32, settings.brick_y_offset - 32)
+            self.enemies.append(goomba)
+        for x in settings.goomba_top:
+            goomba = Enemy(self.screen, self.mario, settings, self.map, 'g', x * 32, settings.brick_y_offset - 8*32)
+            self.enemies.append(goomba)
+
     def play(self):
         clock = pygame.time.Clock()
         self.bgm.play(-1)
@@ -55,7 +58,7 @@ class Game:
         last_time = pygame.time.get_ticks()
         timer = 0
         ticks = 0
-        while settings.game_active:
+        while settings.game_active and settings.game_status == "Ready":
             now = pygame.time.get_ticks()
             delta += (now-last_time)/time_per_tick
             timer += now-last_time
@@ -78,12 +81,52 @@ class Game:
             self.stats.update()
             self.check_stats()
             self.remove_unused_items(self, self.enemies)
+            if settings.game_status == "Reset":
+                self.reset_game()
 
     def check_stats(self):
         if self.stats.lives_left == 0:
             settings.game_active = False
         if self.stats.time == 0:
             settings.game_active = False
+
+    def reset_game(self):
+        print("Received game reset request")
+
+        # Hard or soft?
+        if self.stats.lives_left == 0:
+            reset_type = "Hard"
+            print("Reset is Hard")
+        else:
+            reset_type = "Soft"
+            print("Reset is soft")
+
+        # Soft - Lives remain
+        #   Only score and time are refreshed
+        if reset_type == "Soft":
+            self.stats.score = 0
+            self.stats.time = 400
+            self.stats.last_time_update = pygame.time.get_ticks()
+            self.reset_enemies()
+            self.map = Map(self.screen, settings, self.enemies)
+            self.mario = Mario(self.screen, settings, self.map)
+
+        # Hard -  All lives are gone
+        #   All but high score are reset
+        elif reset_type == "Hard":
+            self.stats.score = 0
+            self.stats.time = 400
+            self.stats.last_time_update = pygame.time.get_ticks()
+            self.stats.coins = 0
+            self.stats.lives_left = 3
+            self.reset_enemies()
+            self.map = Map(self.screen, settings, self.enemies)
+            self.mario = Mario(self.screen, settings, self.map)
+
+        # The game has been reset, resume gameplay
+        settings.game_status = "Ready"
+        settings.game_active = True
+        self.play()
 
 
 game = Game()
