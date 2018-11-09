@@ -1,4 +1,4 @@
-import pygame.font
+import pygame
 
 
 class Scoreboard:
@@ -10,31 +10,43 @@ class Scoreboard:
         self.settings = settings
         self.stats = stats
 
-        self.text_color = (255, 255, 255)
-        self.font = pygame.font.SysFont(None, 88)
+        self.template = pygame.image.load("media/images/other/scoreboard.png")
+        self.template_rect = self.template.get_rect()
 
-        rounded_score = int(round(self.stats.score, -1))
-        score_str = "{:,}".format(rounded_score)
-        self.score_image = self.font.render(score_str, True, self.text_color, self.settings.color_mario_blue)
-
+        self.score_image = self.settings.font_scoreboard.render(str(stats.score), True, self.settings.color_white, self.settings.color_mario_blue)
         self.score_rect = self.score_image.get_rect()
-        self.life_image = self.font.render(str(self.stats.lives_left), True, self.text_color,
-                                           self.settings.color_mario_blue)
 
+        self.coins_image = self.settings.font_scoreboard.render(str(stats.coins), True, self.settings.color_white, self.settings.color_mario_blue)
+        self.coins_rect = self.coins_image.get_rect()
+
+        self.time_image = self.settings.font_scoreboard.render(str(stats.time), True, self.settings.color_white, self.settings.color_mario_blue)
+        self.time_rect = self.time_image.get_rect()
+
+        self.life_image = self.settings.font_scoreboard.render(str(self.stats.lives_left), True, self.settings.color_white, self.settings.color_mario_blue)
         self.life_rect = self.life_image.get_rect()
+
         self.prep_score()
 
     def prep_score(self):
-        rounded_score = int(round(self.stats.score, -1))
-        score_str = "{:,}".format(rounded_score)
-        self.score_image = self.font.render(score_str, True, self.text_color, self.settings.color_mario_blue)
-        self.score_rect.right = self.screen_rect.right - 20
-        self.score_rect.top = 20
-        self.life_image = self.font.render(str(self.stats.lives_left), True, self.text_color,
-                                           self.settings.color_mario_blue)
-        self.life_rect.left = self.screen_rect.left + 20
-        self.life_rect.top = 20
+        self.score_image = self.settings.font_scoreboard.render(str(self.stats.score), True, self.settings.color_white, self.settings.color_mario_blue)
+        self.score_rect.left = self.screen_rect.left + 55
+        self.score_rect.top = 65
+
+        self.coins_image = self.settings.font_scoreboard.render(str(self.stats.coins), True, self.settings.color_white, self.settings.color_mario_blue)
+        self.coins_rect.left = self.screen_rect.left + 325
+        self.coins_rect.top = 65
+
+        self.time_image = self.settings.font_scoreboard.render(str(self.stats.time), True, self.settings.color_white, self.settings.color_mario_blue)
+        self.time_rect.left = self.screen_rect.left + 760
+        self.time_rect.top = 65
+
+        self.life_image = self.settings.font_scoreboard.render(str(self.stats.lives_left), True, self.settings.color_white, self.settings.color_mario_blue)
+        self.life_rect.right = self.screen_rect.right - 95
+        self.life_rect.top = 65
 
     def show_score(self):
+        self.screen.blit(self.template, self.screen_rect)
         self.screen.blit(self.score_image, self.score_rect)
+        self.screen.blit(self.coins_image, self.coins_rect)
+        self.screen.blit(self.time_image, self.time_rect)
         self.screen.blit(self.life_image, self.life_rect)

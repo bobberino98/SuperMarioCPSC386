@@ -36,7 +36,12 @@ class Mario(Sprite):
     def __str__(self):
         return 'Mario: x:' + str(self.rect.x) + ' y:' + str(self.rect.y)
 
-    def update(self, gamemap, delta):  # Update and then blit
+    def update(self, gamemap, delta, stats):  # Update and then blit
+
+        if self.rect.top > self.screen_rect.bottom:
+            stats.lives_left -= 1
+            return
+
         if not self.jumping and not gamemap.object_hit_brick(self):
             self.gravity.perform(self)
 
