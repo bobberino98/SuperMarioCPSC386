@@ -70,7 +70,7 @@ class Game:
                 self.scoreboard.show_score()
                 self.mario.update(self.map, delta, self.stats)
                 for x in self.enemies:
-                    x.update(delta, self.mario, self.enemies, self.stats)
+                    x.update(delta, self.mario, self.enemies, self.stats, settings)
                 pygame.display.flip()
                 ticks += 1
                 delta = 0
