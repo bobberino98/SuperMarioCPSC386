@@ -13,6 +13,7 @@ class Stats:
         self.world = None
         self.import_high_score()
         self.reset_stats()
+        self.update()
 
     def reset_stats(self):
         self.coins = 0

@@ -16,6 +16,9 @@ class Scoreboard:
         self.score_image = self.settings.font_scoreboard.render(str(stats.score), True, self.settings.color_white, self.settings.color_mario_blue)
         self.score_rect = self.score_image.get_rect()
 
+        self.high_score_image = self.settings.font_scoreboard.render(str(stats.high_score), True, self.settings.color_white, self.settings.color_mario_blue)
+        self.high_score_rect = self.high_score_image.get_rect()
+
         self.coins_image = self.settings.font_scoreboard.render(str(stats.coins), True, self.settings.color_white, self.settings.color_mario_blue)
         self.coins_rect = self.coins_image.get_rect()
 
@@ -32,6 +35,10 @@ class Scoreboard:
         self.score_rect.left = self.screen_rect.left + 55
         self.score_rect.top = 65
 
+        self.high_score_image = self.settings.font_scoreboard.render(str(self.stats.high_score), True, self.settings.color_white, self.settings.color_mario_blue)
+        self.high_score_rect.left = self.screen_rect.left + 55
+        self.high_score_rect.top = 155
+
         self.coins_image = self.settings.font_scoreboard.render(str(self.stats.coins), True, self.settings.color_white, self.settings.color_mario_blue)
         self.coins_rect.left = self.screen_rect.left + 325
         self.coins_rect.top = 65
@@ -47,6 +54,7 @@ class Scoreboard:
     def show_score(self):
         self.screen.blit(self.template, self.screen_rect)
         self.screen.blit(self.score_image, self.score_rect)
+        self.screen.blit(self.high_score_image, self.high_score_rect)
         self.screen.blit(self.coins_image, self.coins_rect)
         self.screen.blit(self.time_image, self.time_rect)
         self.screen.blit(self.life_image, self.life_rect)
