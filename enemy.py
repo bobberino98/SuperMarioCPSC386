@@ -33,10 +33,11 @@ class Enemy(Sprite):
     def check_collisions(mario, goombas):
         hit_goomba = pygame.sprite.spritecollideany(mario, goombas)
         if hit_goomba:
-            if mario.rect.bottom - hit_goomba.rect.top < 10:
-                hit_goomba.killed_time = pygame.time.get_ticks()
-                hit_goomba.status = "Dying"
-                hit_goomba.speed = 0
+            if hit_goomba.status == "Walking":
+                if mario.rect.bottom - hit_goomba.rect.top < 10:
+                    hit_goomba.killed_time = pygame.time.get_ticks()
+                    hit_goomba.status = "Dying"
+                    hit_goomba.speed = 0
 
     def update(self, delta, mario, goombas):
         self.check_collisions(mario, goombas)
@@ -48,6 +49,7 @@ class Enemy(Sprite):
 
         if self.status == "DisplayingScore":
             # Show Goomba's point value
+            self.rect.y -= 5
             if pygame.time.get_ticks() - self.killed_time > 1000:
                 goombas.remove(self)
 
@@ -70,7 +72,6 @@ class Enemy(Sprite):
     def animate(self):
         if pygame.time.get_ticks() - self.last_img_update >= 100:
             if self.status == "Walking":
-                print(self.status)
                 img_string = "media/images/enemy/goomba/" + str(self.last_img_mode) + ".png"
                 self.image = pygame.image.load(img_string)
                 self.image = pygame.transform.scale(self.image, (32, 32))
