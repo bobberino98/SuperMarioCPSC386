@@ -7,4 +7,3 @@ class Settings:
         self.goomba_top = [81, 83]  # X offset of Goombas who spawn on platforms
         self.screen_height = 480
         self.screen_width = 1152
-

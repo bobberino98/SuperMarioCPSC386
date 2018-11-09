@@ -1,5 +1,4 @@
 from pygame.sprite import Sprite
-from imagerect import ImageRect
 from gravity import Gravity
 import pygame
 
@@ -28,7 +27,14 @@ class Enemy(Sprite):
     def __str__(self):
         return "Enemy of type:" + self.enemy_type
 
-    def update(self, delta):
+    @staticmethod
+    def check_collisions(mario, goombas):
+        hit_goomba = pygame.sprite.spritecollideany(mario, goombas)
+        if hit_goomba:
+            goombas.remove(hit_goomba)
+
+    def update(self, delta, mario, goombas):
+        self.check_collisions(mario, goombas)
 
         # Walking left
         if self.rect.x - self.mario.rect.x < self.screen_rect.width and self.gamemap.object_hit_brick(self):
