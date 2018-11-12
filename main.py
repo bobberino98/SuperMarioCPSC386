@@ -92,7 +92,7 @@ class Game:
 
     def reset_game(self):
         print("Received game reset request")
-
+        self.bgm.stop()
         # Hard or soft?
         if self.stats.lives_left == 0:
             reset_type = "Hard"
