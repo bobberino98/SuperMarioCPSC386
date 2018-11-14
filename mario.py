@@ -38,8 +38,10 @@ class Mario(Sprite):
 
     def update(self, gamemap, delta, stats):  # Update and then blit
 
-        if self.rect.top > self.screen_rect.bottom:
+        if self.rect.top > self.screen_rect.bottom + 80:  # Has Mario fallen offscreen?
             stats.lives_left -= 1
+            self.settings.game_active = False
+            self.settings.game_status = "Reset"
             return
 
         if not self.jumping and not gamemap.object_hit_brick(self):
