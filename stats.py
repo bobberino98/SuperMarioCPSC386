@@ -7,6 +7,7 @@ class Stats:
         self.coins = None
         self.high_score = None
         self.last_time_update = None
+        self.last_lives_update = None  # Used to track how long since last life count decrement
         self.lives_left = None
         self.score = None
         self.time = None  # Time remaining for user to complete the game
@@ -14,6 +15,13 @@ class Stats:
         self.import_high_score()
         self.reset_stats()
         self.update()
+
+    def decrement_lives(self):
+        if (not self.last_lives_update) or (pygame.time.get_ticks() - self.last_lives_update > 100):
+            self.last_lives_update = pygame.time.get_ticks()
+            self.lives_left -= 1
+        else:
+            print("Not enough time has passed since last life decrement")
 
     def reset_stats(self):
         self.coins = 0

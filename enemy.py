@@ -44,11 +44,11 @@ class Enemy(Sprite):
                         print("Mario collided with goombas left side")
                         settings.game_active = False
                         settings.game_status = "Reset"
-                        stats.lives_left -= 1
+                        stats.decrement_lives()
                     if mario.rect.left - hit_goomba.rect.right < 2:
                         print("Mario collided with goombas right side")
                         settings.game_active = False
-                        stats.lives_left -= 1
+                        stats.decrement_lives()
 
     def update(self, delta, mario, goombas, stats, settings):
         self.check_collisions(mario, goombas, stats, settings)

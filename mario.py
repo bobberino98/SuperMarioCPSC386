@@ -39,7 +39,7 @@ class Mario(Sprite):
     def update(self, gamemap, delta, stats):  # Update and then blit
 
         if self.rect.top > self.screen_rect.bottom + 80:  # Has Mario fallen offscreen?
-            stats.lives_left -= 1
+            stats.decrement_lives()
             self.settings.game_active = False
             self.settings.game_status = "Reset"
             return
