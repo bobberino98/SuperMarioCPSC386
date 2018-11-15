@@ -29,6 +29,7 @@ class Enemy(Sprite):
     def __str__(self):
         return "Enemy of type:" + self.enemy_type
 
+    '''Checks for collisions between Mario and enemies'''
     @staticmethod
     def check_collisions(mario, goombas, stats, settings):
         hit_goomba = pygame.sprite.spritecollideany(mario, goombas)

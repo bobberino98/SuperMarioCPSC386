@@ -213,7 +213,7 @@ class Map:
 
     def scroll(self, speed):
         self.dist += speed
-        for column in self.brick_columns:  # Blit all bricks
+        for column in self.brick_columns:  # Move all brick columns
             for brick in column:
                 brick.im_rect.rect.x -= speed
         for cloud in self.clouds:
@@ -295,21 +295,16 @@ class Map:
 
     @staticmethod
     def collide_helper(item, brick):
-
-            # print(item.__str__() + " is touching the ground")
-
-            if item.jump_speed > 0 and item.rect.bottom > brick.rect.bottom:
-                item.rect.top = brick.rect.bottom
-                item.speed = 0
-
-            elif item.speed * item.dir > 0 and item.rect.centery > brick.rect.top:
-                item.rect.right = brick.rect.left
-                item.decelerate()
-                item.speed = 0
-
-            elif item.speed * item.dir < 0 and item.rect.centery > brick.rect.top:
-                item.rect.left = brick.rect.right
-                item.decelerate()
-                item.speed = 0
-
-            return True
+        # print(item.__str__() + " is touching the ground")
+        if item.jump_speed > 0 and item.rect.bottom > brick.rect.bottom:
+            item.rect.top = brick.rect.bottom
+            item.speed = 0
+        elif item.speed * item.dir > 0 and item.rect.centery > brick.rect.top:
+            item.rect.right = brick.rect.left
+            item.decelerate()
+            item.speed = 0
+        elif item.speed * item.dir < 0 and item.rect.centery > brick.rect.top:
+            item.rect.left = brick.rect.right
+            item.decelerate()
+            item.speed = 0
+        return True
