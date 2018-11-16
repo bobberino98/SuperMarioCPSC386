@@ -47,7 +47,7 @@ class Map:
         for num in range(224):  # Build each column
             self.add_column(num)
 
-        # self.add_clouds()
+        self.add_clouds()
         self.add_hills()
         self.add_bushes()
 
@@ -240,10 +240,12 @@ class Map:
         for column in self.brick_columns:
             for brick in column:
                 if pygame.sprite.collide_rect(item, brick):
-                        if abs(brick.rect.left - item.rect.right) <= 10 and abs(brick.rect.top - item.rect.bottom) > 10:
-                            return True
-                        if abs(item.rect.left - brick.rect.right) <= 10 and abs(brick.rect.top - item.rect.bottom) > 10:
-                            return True
+                        if abs(brick.rect.left - item.rect.right) <= 10:
+                            if abs(brick.rect.top - item.rect.bottom) > 10:
+                                return True
+                        if abs(item.rect.left - brick.rect.right) <= 10:
+                            if abs(brick.rect.top - item.rect.bottom) > 10:
+                                return True
         return False
 
     def enemy_collide(self, item):
