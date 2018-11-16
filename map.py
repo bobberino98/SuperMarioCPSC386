@@ -44,6 +44,12 @@ class Map:
         self.bushM = [42, 90, 140]
         self.bushS = [24, 72, 120, 158, 168, 205, 215]
 
+        self.flagpole = pygame.sprite.Sprite()
+        self.flagpole.image = pygame.image.load("media/images/other/flagpole.png")
+        self.flagpole_rect = self.flagpole.image.get_rect()
+        self.flagpole_rect.x = 6420
+        self.flagpole_rect.y = 142
+
         self.flag = pygame.sprite.Sprite()
         self.flag.image = pygame.image.load("media/images/other/flag.png")
         self.flag_rect = self.flag.image.get_rect()
@@ -226,6 +232,7 @@ class Map:
             bush.rect.x -= speed
         for enemy in self.enemies:
             enemy.rect.x -= speed
+        self.flagpole_rect.x -= speed
         self.flag_rect.x -= speed
         self.castle_rect.x -= speed
 
@@ -239,6 +246,7 @@ class Map:
         for column in self.brick_columns:   # Blit all bricks
             for x in column:
                 x.im_rect.blitme()
+        self.screen.blit(self.flagpole.image, self.flagpole_rect)
         self.screen.blit(self.flag.image, self.flag_rect)
         self.screen.blit(self.castle.image, self.castle_rect)
 
