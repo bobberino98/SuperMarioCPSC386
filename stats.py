@@ -20,8 +20,6 @@ class Stats:
         if (not self.last_lives_update) or (pygame.time.get_ticks() - self.last_lives_update > 100):
             self.last_lives_update = pygame.time.get_ticks()
             self.lives_left -= 1
-        else:
-            print("Not enough time has passed since last life decrement")
 
     def reset_stats(self):
         self.coins = 0
@@ -45,6 +43,7 @@ class Stats:
         data = open('high_score.txt', 'r')
         if data:
             self.high_score = int(data.read())
-            print("Success importing high score: " + str(self.high_score))
+            # print("Success importing high score: " + str(self.high_score))
         else:
-            print("Error importing high score")
+            # print("Error importing high score")
+            pass

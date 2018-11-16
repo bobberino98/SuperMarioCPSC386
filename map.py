@@ -10,7 +10,6 @@ from pipe import Pipe
 class Map:
     def __init__(self, screen, settings, enemies):
         super(Map, self).__init__()
-        self.brick_count = 80  # number of bricks to initially render
         self.brick_columns = []
         self.clouds = []
         self.hills = []
@@ -41,7 +40,6 @@ class Map:
         self.cloudL = [28, 76, 124, 172]
         self.hillL = [1, 49, 97, 145, 193]
         self.hillS = [17, 65, 113, 161, 208]
-
         self.bushL = [12, 60, 108]
         self.bushM = [42, 90, 140]
         self.bushS = [24, 72, 120, 158, 168, 205, 215]
@@ -105,8 +103,8 @@ class Map:
             self.bushes.append(bush)
 
     def add_column(self, num):  # Create a new column of bricks
-        if num in self.gapcols:
-            pass
+        if num in self.gapcols:  # If this is a gap column (canyon)
+            pass  # Do nothing
         else:
             new_column = Group()
             if len(self.brick_columns) == 0:
@@ -243,6 +241,9 @@ class Map:
                     if pygame.sprite.collide_rect(item, brick):
                         if abs(brick.rect.top - item.rect.bottom) <= 10:
                             return True, "Floor"
+                    if pygame.sprite.collide_rect(item, brick):
+                        if abs(brick.rect.bottom - item.rect.top) <= 5:
+                            print("Mario hit a brick bottom")
 
     def enemy_collide(self, item):
         for column in self.brick_columns:
