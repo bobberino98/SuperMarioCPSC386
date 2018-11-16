@@ -44,6 +44,18 @@ class Map:
         self.bushM = [42, 90, 140]
         self.bushS = [24, 72, 120, 158, 168, 205, 215]
 
+        self.flag = pygame.sprite.Sprite()
+        self.flag.image = pygame.image.load("media/images/other/flag.png")
+        self.flag_rect = self.flag.image.get_rect()
+        self.flag_rect.x = 6420
+        self.flag_rect.y = 142
+
+        self.castle = pygame.sprite.Sprite()
+        self.castle.image = pygame.image.load("media/images/other/castle.png")
+        self.castle_rect = self.castle.image.get_rect()
+        self.castle_rect.x = 6515
+        self.castle_rect.y = 282
+
         for num in range(224):  # Build each column
             self.add_column(num)
 
@@ -214,6 +226,8 @@ class Map:
             bush.rect.x -= speed
         for enemy in self.enemies:
             enemy.rect.x -= speed
+        self.flag_rect.x -= speed
+        self.castle_rect.x -= speed
 
     def blitme(self):  # Blit everything on the map
         for cloud in self.clouds:
@@ -225,6 +239,8 @@ class Map:
         for column in self.brick_columns:   # Blit all bricks
             for x in column:
                 x.im_rect.blitme()
+        self.screen.blit(self.flag.image, self.flag_rect)
+        self.screen.blit(self.castle.image, self.castle_rect)
 
     # Is a specified item toughing the ground?
     def object_touching_ground(self, item):
