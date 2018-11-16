@@ -5,7 +5,7 @@ import audio
 
 
 class Mario(Sprite):
-    SPEED_CAP = 5
+    SPEED_CAP = 5  # Prevents extreme speed
     ACCEL_FACTOR = 0.025
     DECEL_FACTOR = 0.25
     FALL_FACTOR = 0.20
@@ -72,7 +72,6 @@ class Mario(Sprite):
                 self.dir = 1
             self.accelerate()
             if self.rect.centerx >= self.screen_rect.width/2:
-
                 self.gamemap.scroll(self.speed)
             else:
                 self.rect.x += self.dir * self.speed * delta

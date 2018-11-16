@@ -47,7 +47,7 @@ class Map:
         for num in range(224):  # Build each column
             self.add_column(num)
 
-        self.add_clouds()
+        # self.add_clouds()
         self.add_hills()
         self.add_bushes()
 
@@ -162,48 +162,40 @@ class Map:
                     brick_temp.rect.y = self.settings.brick_y_offset - 32
                     new_column.add(brick_temp)
                 if num in self.stair2:
-
                     brick_temp = StairBrick(self.screen, 2)
                     brick_temp.rect.x = x
                     brick_temp.rect.y = self.settings.brick_y_offset - 64
                     new_column.add(brick_temp)
                 if num in self.stair3:
-
                     brick_temp = StairBrick(self.screen, 3)
                     brick_temp.rect.x = x
                     brick_temp.rect.y = self.settings.brick_y_offset - 96
                     new_column.add(brick_temp)
                 if num in self.stair4:
-
                     brick_temp = StairBrick(self.screen, 4)
                     brick_temp.rect.x = x
                     brick_temp.rect.y = self.settings.brick_y_offset - 128
                     new_column.add(brick_temp)
                 if num in self.stair5:
-
                     brick_temp = StairBrick(self.screen, 5)
                     brick_temp.rect.x = x
                     brick_temp.rect.y = self.settings.brick_y_offset - 160
                     new_column.add(brick_temp)
                 if num in self.stair6:
-
                     brick_temp = StairBrick(self.screen, 6)
                     brick_temp.rect.x = x
                     brick_temp.rect.y = self.settings.brick_y_offset - 192
                     new_column.add(brick_temp)
                 if num in self.stair7:
-
                     brick_temp = StairBrick(self.screen, 7)
                     brick_temp.rect.x = x
                     brick_temp.rect.y = self.settings.brick_y_offset - 224
                     new_column.add(brick_temp)
                 if num in self.stair8:
-
                     brick_temp = StairBrick(self.screen, 8)
                     brick_temp.rect.x = x
                     brick_temp.rect.y = self.settings.brick_y_offset - 256
                     new_column.add(brick_temp)
-
             self.brick_columns.append(new_column)
 
     def update(self):  # Update and then blit
@@ -241,9 +233,6 @@ class Map:
                     if pygame.sprite.collide_rect(item, brick):
                         if abs(brick.rect.top - item.rect.bottom) <= 10:
                             return True, "Floor"
-                    if pygame.sprite.collide_rect(item, brick):
-                        if abs(brick.rect.bottom - item.rect.top) <= 5:
-                            print("Mario hit a brick bottom")
 
     def enemy_collide(self, item):
         for column in self.brick_columns:
@@ -299,11 +288,12 @@ class Map:
         if item.jump_speed > 0 and item.rect.bottom > brick.rect.bottom:
             item.rect.top = brick.rect.bottom
             item.speed = 0
-        elif item.speed * item.dir > 0 and item.rect.centery > brick.rect.top:
+        elif item.speed * item.dir > 0 and item.rect.centery > brick.rect.top:  # Reports if Mario has collided with a brick's left side
             item.rect.right = brick.rect.left
             item.decelerate()
             item.speed = 0
-        elif item.speed * item.dir < 0 and item.rect.centery > brick.rect.top:
+        elif item.speed * item.dir < 0 and item.rect.centery > brick.rect.top: # Reports if Mario has collided with a brick's right side
+            print("aye from the right")
             item.rect.left = brick.rect.right
             item.decelerate()
             item.speed = 0

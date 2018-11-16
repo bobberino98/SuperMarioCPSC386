@@ -106,7 +106,7 @@ class Game:
             # print("Reset - Soft")
 
         # Soft - Lives remain
-        #   Only score and time are refreshed
+        #  Only score and time are refreshed
         if reset_type == "Soft":
             self.stats.score = 0
             self.stats.time = 400
@@ -116,7 +116,7 @@ class Game:
             self.mario = Mario(self.screen, settings, self.map)
 
         # Hard -  All lives are gone
-        #   All but high score are reset
+        # All but high score are reset
         elif reset_type == "Hard":
             self.stats.score = 0
             self.stats.time = 400

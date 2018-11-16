@@ -16,6 +16,8 @@ class Stats:
         self.reset_stats()
         self.update()
 
+    # Decrements Mario's count of lives remaining
+    # Prevents Mario from loosing multiple lives at once from multiple collision triggers
     def decrement_lives(self):
         if (not self.last_lives_update) or (pygame.time.get_ticks() - self.last_lives_update > 100):
             self.last_lives_update = pygame.time.get_ticks()
