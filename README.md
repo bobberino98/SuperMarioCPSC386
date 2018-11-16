@@ -2,6 +2,8 @@
 
 A take on classic Super Mario. For educational purposes.
 
+Fonts: BPDots
+
 Art:
 	
 	Place clouds and background hills
