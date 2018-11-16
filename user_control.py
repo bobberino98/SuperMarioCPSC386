@@ -3,8 +3,9 @@ import sys
 
 
 class Controller:
-    def __init__(self, mario):
+    def __init__(self, mario, settings):
         self.mario = mario
+        self.settings = settings
 
     def check_events(self):
         for event in pygame.event.get():
@@ -28,6 +29,8 @@ class Controller:
             self.mario.moving_down = False
         elif event.key == pygame.K_UP and not self.mario.jump_start:
             self.mario.jumping = True
+        elif event.key == pygame.K_m:
+            self.settings.muted = not self.settings.muted
         elif event.key == pygame.K_ESCAPE:
             sys.exit()
 

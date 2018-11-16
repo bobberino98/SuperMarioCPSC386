@@ -26,8 +26,8 @@ class Game:
     def __str__(self):
         return settings.game_title
 
-    ''' Removes items from memory once they've gone offscreen. Helps save memory and improve efficiency.
-    Currently only tested to work on lists containing objects of class Enemy'''
+    # Removes items from memory once they've gone offscreen. Helps save memory and improve efficiency.
+    # Currently only tested to work on lists containing objects of class Enemy
     @staticmethod
     def remove_unused_items(self, items):
         for item in items:
@@ -51,7 +51,7 @@ class Game:
     def play(self):
         clock = pygame.time.Clock()
         self.bgm.play(-1)
-        user_control = Controller(self.mario)
+        user_control = Controller(self.mario, settings)
         time_per_tick = 1000 / 60
         delta = 0
 
@@ -59,6 +59,10 @@ class Game:
         timer = 0
         ticks = 0
         while settings.game_active and settings.game_status == "Ready":
+            if settings.muted:
+                self.bgm.set_volume(0)
+            else:
+                self.bgm.set_volume(1)
             now = pygame.time.get_ticks()
             delta += (now-last_time)/time_per_tick
             timer += now-last_time

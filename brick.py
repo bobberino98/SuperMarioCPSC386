@@ -30,6 +30,7 @@ class BreakBrick(Sprite):  # Floating bricks
         self.type = "breakable"
         self.im_rect = ImageRect(screen, "media/images/brick/platform", 32, 32)
         self.rect = self.im_rect.rect
+        self.opened = False  # If Mario hits the bricks underside, this becomes true
 
 
 class StairBrick(Sprite):

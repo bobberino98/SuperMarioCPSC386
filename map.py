@@ -236,12 +236,12 @@ class Map:
             for x in column:
                 x.im_rect.blitme()
 
+    # Checks to see if a specified item collides with any bricks
     def object_hit_brick(self, item):
         for column in self.brick_columns:
                 for brick in column:
                     if pygame.sprite.collide_rect(item, brick):
                         if abs(brick.rect.top - item.rect.bottom) <= 10:
-                            # print(item.__str__() + " is touching the ground")
                             return True, "Floor"
 
     def enemy_collide(self, item):
@@ -295,7 +295,6 @@ class Map:
 
     @staticmethod
     def collide_helper(item, brick):
-        # print(item.__str__() + " is touching the ground")
         if item.jump_speed > 0 and item.rect.bottom > brick.rect.bottom:
             item.rect.top = brick.rect.bottom
             item.speed = 0

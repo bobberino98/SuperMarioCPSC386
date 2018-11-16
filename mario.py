@@ -23,7 +23,7 @@ class Mario(Sprite):
         self.rect = self.image.get_rect()
         self.dist = 0
         self.speed = 0
-        self.dir = 1
+        self.dir = 1  # -1 = moving left, 0 = standing still, 1 = moving right
         self.moving_right = False
         self.moving_left = False
         self.jumping = False
@@ -63,7 +63,7 @@ class Mario(Sprite):
                 self.dir = -1
             self.accelerate()
             if self.rect.x > 0:
-                self.rect.x += self.dir * self.speed*delta
+                self.rect.x += self.dir * self.speed * delta
 
         elif self.moving_right:
             if self.dir == -1 and self.speed != 0:
@@ -75,11 +75,11 @@ class Mario(Sprite):
 
                 self.gamemap.scroll(self.speed)
             else:
-                self.rect.x += self.dir * self.speed*delta
+                self.rect.x += self.dir * self.speed * delta
         else:
             self.decelerate()
             if self.rect.x > 0 and self.rect.right < self.screen_rect.width:
-                self.rect.x += self.dir * self.speed*delta
+                self.rect.x += self.dir * self.speed * delta
             if self.rect.centerx >= self.screen_rect.width / 2:
                 self.gamemap.scroll(self.speed)
 
