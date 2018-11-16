@@ -11,6 +11,8 @@ class Controller:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
+            if self.settings.game_status == "Finishing":
+                return  # Ignore user input, control is now autonomous
             elif event.type == pygame.KEYDOWN:
                 self.check_keydown_events(event)
             elif event.type == pygame.KEYUP:

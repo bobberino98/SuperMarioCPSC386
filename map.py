@@ -18,6 +18,7 @@ class Map:
         self.settings = settings
         self.screen = screen
         self.dist = 0
+        self.mario = None
         self.gapcols = [70, 71, 87, 88, 89, 156, 157]  # Gap columns
         self.b3cols = [21, 23, 25, 78, 80, 95, 101, 102, 119, 130, 131, 171, 172, 174]
         self.b7cols = [81, 82, 83, 84, 85, 86, 87, 88, 92, 93, 94, 122, 123, 124, 129, 132]
@@ -46,21 +47,21 @@ class Map:
 
         self.flagpole = pygame.sprite.Sprite()
         self.flagpole.image = pygame.image.load("media/images/other/flagpole.png")
-        self.flagpole_rect = self.flagpole.image.get_rect()
-        self.flagpole_rect.x = 6420
-        self.flagpole_rect.y = 142
+        self.flagpole.rect = self.flagpole.image.get_rect()
+        self.flagpole.rect.x = 6420
+        self.flagpole.rect.y = 142
 
         self.flag = pygame.sprite.Sprite()
         self.flag.image = pygame.image.load("media/images/other/flag.png")
-        self.flag_rect = self.flag.image.get_rect()
-        self.flag_rect.x = 6420
-        self.flag_rect.y = 142
+        self.flag.rect = self.flag.image.get_rect()
+        self.flag.rect.x = 6420
+        self.flag.rect.y = 142
 
         self.castle = pygame.sprite.Sprite()
         self.castle.image = pygame.image.load("media/images/other/castle.png")
-        self.castle_rect = self.castle.image.get_rect()
-        self.castle_rect.x = 6515
-        self.castle_rect.y = 282
+        self.castle.rect = self.castle.image.get_rect()
+        self.castle.rect.x = 6515
+        self.castle.rect.y = 282
 
         for num in range(224):  # Build each column
             self.add_column(num)
@@ -68,6 +69,19 @@ class Map:
         self.add_clouds()
         self.add_hills()
         self.add_bushes()
+
+    def set_mario(self, mario):
+        self.mario = mario
+
+    def mario_touching_flagpole(self):
+        if pygame.sprite.collide_rect(self.mario, self.flagpole):
+            self.settings.game_status = "Finishing"
+
+    def mario_touching_castle(self):
+        if pygame.sprite.collide_rect(self.mario, self.castle):
+            return True
+        else:
+            return False
 
     def add_clouds(self):
         for x in self.cloudS1:
@@ -217,6 +231,8 @@ class Map:
             self.brick_columns.append(new_column)
 
     def update(self):  # Update and then blit
+        #if self
+        self.mario_touching_flagpole()
         self.blitme()
 
     def scroll(self, speed):
@@ -232,9 +248,9 @@ class Map:
             bush.rect.x -= speed
         for enemy in self.enemies:
             enemy.rect.x -= speed
-        self.flagpole_rect.x -= speed
-        self.flag_rect.x -= speed
-        self.castle_rect.x -= speed
+        self.flagpole.rect.x -= speed
+        self.flag.rect.x -= speed
+        self.castle.rect.x -= speed
 
     def blitme(self):  # Blit everything on the map
         for cloud in self.clouds:
@@ -246,9 +262,17 @@ class Map:
         for column in self.brick_columns:   # Blit all bricks
             for x in column:
                 x.im_rect.blitme()
-        self.screen.blit(self.flagpole.image, self.flagpole_rect)
-        self.screen.blit(self.flag.image, self.flag_rect)
-        self.screen.blit(self.castle.image, self.castle_rect)
+        self.screen.blit(self.flagpole.image, self.flagpole.rect)
+        self.screen.blit(self.flag.image, self.flag.rect)
+        self.screen.blit(self.castle.image, self.castle.rect)
+
+    # Called repeatedly by main once Mario has made contact with the flagpole
+    def lower_flag(self):
+        if self.flag.rect.y < 300:
+            self.flag.rect.y += 1
+            return "Lowering"
+        else:
+            return "Done"
 
     # Is a specified item toughing the ground?
     def object_touching_ground(self, item):

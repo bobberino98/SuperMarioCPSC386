@@ -20,6 +20,7 @@ class Game:
         self.enemies = []
         self.map = Map(self.screen, settings, self.enemies)
         self.mario = Mario(self.screen, settings, self.map)
+        self.map.set_mario(self.mario)
         self.reset_enemies()
         self.bgm = pygame.mixer.Sound("media/sounds/bgm.wav")
 
@@ -57,7 +58,7 @@ class Game:
         last_time = pygame.time.get_ticks()
         timer = 0
         ticks = 0
-        while settings.game_active and settings.game_status == "Ready":
+        while settings.game_active and settings.game_status == "Ready" or settings.game_status == "Finishing":
             if settings.muted:
                 self.bgm.set_volume(0)
             else:
@@ -80,12 +81,23 @@ class Game:
             self.remove_unused_items(self, self.enemies)
             if settings.game_status == "Reset":
                 self.reset_game()
+            if settings.game_status == "Finishing":
+                self.finish_game()
 
     def check_stats(self):
         if self.stats.lives_left == 0:
             settings.game_active = False
         if self.stats.time == 0:
             settings.game_active = False
+
+    def finish_game(self):
+        while self.map.lower_flag() == "Lowering":
+            continue
+        # while not self.map.mario_touching_castle():
+        #    print("Mario needs to walk")
+        #    self.mario.moving_right = True
+        # self.stats.lives_left = 0  # Trigger a hard reset
+        # self.reset_game()
 
     def reset_game(self):
         # print("Received reset request")
@@ -107,6 +119,7 @@ class Game:
             self.reset_enemies()
             self.map = Map(self.screen, settings, self.enemies)
             self.mario = Mario(self.screen, settings, self.map)
+            self.map.set_mario(self.mario)
 
         # Hard -  All lives are gone
         # All but high score are reset
