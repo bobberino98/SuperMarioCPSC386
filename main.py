@@ -53,7 +53,6 @@ class Game:
         self.bgm.play(-1)
         user_control = Controller(self.mario, settings)
         time_per_tick = 1000 / 60
-        delta = 0
 
         last_time = pygame.time.get_ticks()
         timer = 0
@@ -63,24 +62,18 @@ class Game:
                 self.bgm.set_volume(0)
             else:
                 self.bgm.set_volume(1)
-            now = pygame.time.get_ticks()
-            delta += (now-last_time)/time_per_tick
-            timer += now-last_time
-            last_time = now
-            if delta >= 1:  # Please explain
+            self.screen.fill(settings.color_mario_blue)
+            user_control.check_events()
+            self.map.update()
+            self.scoreboard.prep_score()
 
-                self.screen.fill(settings.color_mario_blue)
-                user_control.check_events()
-                self.map.update()
-                self.scoreboard.prep_score()
-
-                self.scoreboard.show_score()
-                self.mario.update(self.map, delta, self.stats)
-                for x in self.enemies:
-                    x.update(delta, self.mario, self.enemies, self.stats, settings)
-                pygame.display.flip()
-                ticks += 1
-                delta = 0
+            self.scoreboard.show_score()
+            self.mario.update(self.map, self.stats)
+            for x in self.enemies:
+                x.update(self.mario, self.enemies, self.stats, settings)
+            pygame.display.flip()
+            ticks += 1
+            delta = 0
             clock.tick(60)
             self.stats.update()
             self.check_stats()

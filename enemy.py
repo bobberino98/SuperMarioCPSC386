@@ -9,16 +9,16 @@ class Enemy(Sprite):
 
         self.screen = screen
         self.screen_rect = screen.get_rect()
-        self.speed = 1
+        self.speed = -1
         self.mario = mario
         self.settings = settings
         self.enemy_type = enemy_type
         self.gamemap = gamemap
         self.last_img_update = pygame.time.get_ticks()
-        self.last_img_mode = 1
+        self.last_img_mode = 1  # Used for character animation
         self.status = "Walking"  # Walking || Dying || Dead || DisplayingScore
         self.killed_time = None  # The time when the enemy made contact with (was killed by) Mario
-        self.killed_delay_time = 300
+        self.killed_delay_time = 300  # Ticks to wait before displaying the enemy's point value
         if self.enemy_type == 'g':
             img_string = "media/images/enemy/goomba/" + str(self.last_img_mode) + ".png"
             self.image = pygame.image.load(img_string)
@@ -29,7 +29,7 @@ class Enemy(Sprite):
     def __str__(self):
         return "Enemy of type:" + self.enemy_type
 
-    '''Checks for collisions between Mario and enemies'''
+    # Checks for collisions between Mario and enemies
     @staticmethod
     def check_collisions(mario, goombas, stats, settings):
         hit_goomba = pygame.sprite.spritecollideany(mario, goombas)
@@ -40,47 +40,43 @@ class Enemy(Sprite):
                     hit_goomba.killed_time = pygame.time.get_ticks()
                     hit_goomba.status = "Dying"
                     hit_goomba.speed = 0
-                if mario.rect.bottom - hit_goomba.rect.bottom <= 1 and hit_goomba.status == "Walking":
+                if mario.rect.bottom - hit_goomba.rect.bottom <= 1 and hit_goomba.status == "Walking":  # Are Mario and the enemy next to eachother on the vertical (y) axis?
                     if hit_goomba.rect.left - mario.rect.right < 2:
-                        print("Mario collided with goombas left side")
+                        # print("Mario collided with goombas left side")
                         settings.game_active = False
                         settings.game_status = "Reset"
                         stats.decrement_lives()
                     if mario.rect.left - hit_goomba.rect.right < 2:
-                        print("Mario collided with goombas right side")
+                        # print("Mario collided with goombas right side")
                         settings.game_active = False
                         stats.decrement_lives()
 
-    def update(self, delta, mario, goombas, stats, settings):
+    def update(self, mario, goombas, stats, settings):
         self.check_collisions(mario, goombas, stats, settings)
 
         if self.status == "Dying":
-            # Show Goomba's point value
-            if pygame.time.get_ticks() - self.killed_time > self.killed_delay_time:
-                self.status = "DisplayingScore"
+            if pygame.time.get_ticks() - self.killed_time > self.killed_delay_time:  # If enough time has passed since the enemy was killed
+                self.status = "DisplayingScore"  # Show the enemy's point value
 
         if self.status == "DisplayingScore":
-            # Show Goomba's point value
             self.rect.y -= 5
-            if pygame.time.get_ticks() - self.killed_time > 1000:
-                goombas.remove(self)
+            if pygame.time.get_ticks() - self.killed_time > 1000:  # If enough time has passed since the score began displaying
+                goombas.remove(self)  # Remove the score and the enemy simultaneously
 
-        # Walking left
-        if self.rect.x - self.mario.rect.x < self.screen_rect.width and self.gamemap.object_hit_brick(self):
-            self.rect.x -= self.speed*delta
-
-        # Change direction on collision? Please clarify
-        if self.gamemap.enemy_collide(self):
+        if self.gamemap.object_touching_wall(self):
             self.speed *= -1
 
-        # Gravity always on
-        elif not self.gamemap.object_hit_brick(self):
+        # Walking
+        self.rect.x += 1 * self.speed
+
+        # Perform gravity
+        if not self.gamemap.object_touching_ground(self):
             Gravity.perform(self)
 
         self.animate()
         self.blitme()
 
-    '''Changes a Goombas image to emulate walking animation'''
+    # Changes enemy's image to implement walking animation
     def animate(self):
         if pygame.time.get_ticks() - self.last_img_update >= 100:
             if self.status == "Walking":
@@ -109,5 +105,6 @@ class Enemy(Sprite):
                 self.image = pygame.transform.scale(self.image, (32, 32))
             self.last_img_update = pygame.time.get_ticks()
 
-    def blitme(self):  # Blit enemy
+    # Blit enemy
+    def blitme(self):
         self.screen.blit(self.image, self.rect)

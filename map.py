@@ -226,13 +226,25 @@ class Map:
             for x in column:
                 x.im_rect.blitme()
 
-    # Checks to see if a specified item collides with any bricks
-    def object_hit_brick(self, item):
+    # Is a specified item toughing the ground?
+    def object_touching_ground(self, item):
         for column in self.brick_columns:
                 for brick in column:
                     if pygame.sprite.collide_rect(item, brick):
                         if abs(brick.rect.top - item.rect.bottom) <= 10:
-                            return True, "Floor"
+                            return True
+        return False
+
+    # Is a specified item toughing a vertical rect edge
+    def object_touching_wall(self, item):
+        for column in self.brick_columns:
+            for brick in column:
+                if pygame.sprite.collide_rect(item, brick):
+                        if abs(brick.rect.left - item.rect.right) <= 10 and abs(brick.rect.top - item.rect.bottom) > 10:
+                            return True
+                        if abs(item.rect.left - brick.rect.right) <= 10 and abs(brick.rect.top - item.rect.bottom) > 10:
+                            return True
+        return False
 
     def enemy_collide(self, item):
         for column in self.brick_columns:
@@ -292,8 +304,7 @@ class Map:
             item.rect.right = brick.rect.left
             item.decelerate()
             item.speed = 0
-        elif item.speed * item.dir < 0 and item.rect.centery > brick.rect.top: # Reports if Mario has collided with a brick's right side
-            print("aye from the right")
+        elif item.speed * item.dir < 0 and item.rect.centery > brick.rect.top:  # Reports if Mario has collided with a brick's right side
             item.rect.left = brick.rect.right
             item.decelerate()
             item.speed = 0

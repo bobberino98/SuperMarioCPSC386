@@ -5,7 +5,7 @@ import audio
 
 
 class Mario(Sprite):
-    SPEED_CAP = 5  # Prevents extreme speed
+    SPEED_CAP = 4  # Prevents extreme speed
     ACCEL_FACTOR = 0.025
     DECEL_FACTOR = 0.25
     FALL_FACTOR = 0.20
@@ -36,7 +36,7 @@ class Mario(Sprite):
     def __str__(self):
         return 'Mario: x:' + str(self.rect.x) + ' y:' + str(self.rect.y)
 
-    def update(self, gamemap, delta, stats):  # Update and then blit
+    def update(self, gamemap, stats):  # Update and then blit
 
         if self.rect.top > self.screen_rect.bottom + 80:  # Has Mario fallen offscreen?
             stats.decrement_lives()
@@ -44,16 +44,16 @@ class Mario(Sprite):
             self.settings.game_status = "Reset"
             return
 
-        if not self.jumping and not gamemap.object_hit_brick(self):
+        if not self.jumping and not gamemap.object_touching_ground(self):
             self.gravity.perform(self)
 
         if self.jumping:
-            if gamemap.object_hit_brick(self):
+            if gamemap.object_touching_ground(self):
                 audio.play(0)
             self.jump()
-        elif self.jumping and gamemap.object_hit_brick(self):
+        elif self.jumping and gamemap.object_touching_ground(self):
             self.jump()
-        elif self.gamemap.object_hit_brick:
+        elif self.gamemap.object_touching_ground:
             self.jump_start = False
             self.jump_speed = 0
         if self.moving_left:
@@ -63,7 +63,7 @@ class Mario(Sprite):
                 self.dir = -1
             self.accelerate()
             if self.rect.x > 0:
-                self.rect.x += self.dir * self.speed * delta
+                self.rect.x += self.dir * self.speed
 
         elif self.moving_right:
             if self.dir == -1 and self.speed != 0:
@@ -74,15 +74,15 @@ class Mario(Sprite):
             if self.rect.centerx >= self.screen_rect.width/2:
                 self.gamemap.scroll(self.speed)
             else:
-                self.rect.x += self.dir * self.speed * delta
+                self.rect.x += self.dir * self.speed
         else:
             self.decelerate()
             if self.rect.x > 0 and self.rect.right < self.screen_rect.width:
-                self.rect.x += self.dir * self.speed * delta
+                self.rect.x += self.dir * self.speed
             if self.rect.centerx >= self.screen_rect.width / 2:
                 self.gamemap.scroll(self.speed)
 
-        self.rect.y -= self.jump_speed*delta
+        self.rect.y -= self.jump_speed
         self.gamemap.collide(self)
         self.animate()
         self.blitme()
@@ -96,7 +96,7 @@ class Mario(Sprite):
                 if self.dir == -1:
                     self.image = pygame.transform.flip(self.image, 1, 0)
             elif self.moving_right or self.moving_left:
-                if self.gamemap.object_hit_brick:
+                if self.gamemap.object_touching_ground:
                     img_string = "media/images/mario/walking_" + str(self.last_img_mode) + ".png"
                     self.image = pygame.image.load(img_string)
                     self.image = pygame.transform.scale(self.image, (35, 50))
@@ -145,12 +145,12 @@ class Mario(Sprite):
                 self.jump_speed -= Mario.FALL_FACTOR
                 if self.jump_speed <= 0:
                     self.jump_finished = True
-                elif self.gamemap.object_hit_brick(self):
+                elif self.gamemap.object_touching_ground(self):
                     self.jump_finished = True
 
         else:
             self.jump_speed -= Mario.FALL_FACTOR
-            if self.gamemap.object_hit_brick(self):
+            if self.gamemap.object_touching_ground(self):
                 self.jump_finished = False
                 self.jump_start = False
 
